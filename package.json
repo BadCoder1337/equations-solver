@@ -7,10 +7,15 @@
     "@types/node": "12.12.0",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
+    "konva": "^4.0.16",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-konva": "^16.10.1-0",
     "react-scripts": "3.2.0",
-    "typescript": "3.6.4"
+    "react-mathquill": "https://github.com/BadCoder1337/react-mathquill#e375fb6",
+    "evaluatex": "https://github.com/BadCoder1337/evaluatex#0946a53",
+    "typescript": "3.6.4",
+    "undux": "^5.0.0-beta.22"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tslint": "^5.20.0"
   }
 }
