@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './components/Root';
+import App from './components/App';
+// import Root from './components/Root';
 import './index.css';
+import './mathquill.css';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

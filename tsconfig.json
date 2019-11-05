@@ -18,6 +18,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "typeRoots": ["./src/types"]
   },
   "include": [

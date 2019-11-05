@@ -1,25 +1,26 @@
 import React from 'react';
-import { IStoreProps, Store } from '../../state/store';
+import { IStoreProps, StoreHOC } from '../../state/store';
 import Formula from '../Formula';
 import Graph from '../Graph';
+import MathBoard from '../MathBoard';
 import './App.css';
 
 class App extends React.Component<IStoreProps> {
   public render() {
-    const { store } = this.props;
+    // const { store } = this.props;
     return (
       <div className="App">
         <header className="App-header">
           <Graph />
           <Formula />
-          <p onClick={() => store.set('step')(store.get('step') + 0.1)}>
+          <MathBoard />
+          {/* <div onClick={() => store.set('step')(store.get('step') + 0.1)}>
             Edit <code>src/App.tsx</code> and save to {store.get('step')}.
-          </p>
-          <input value={store.get('formula')} type="text" onChange={e => store.set('formula')(e.target.value)} />
+          </div> */}
         </header>
       </div>
     );
   }
 }
 
-export default Store.withStore(App);
+export default StoreHOC(App);

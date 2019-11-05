@@ -17,6 +17,10 @@
   color: white;
 }
 
+.App-header > * {
+  margin: auto;
+}
+
 .App-link {
   color: #09d3ac;
 }

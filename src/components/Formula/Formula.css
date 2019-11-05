@@ -1,0 +1,9 @@
+.Formula > * {
+  margin: 5px 10px;
+}
+
+.Formula-zero {
+  font-family: Symbola, "Times New Roman", serif !important;
+  font-size: 26px;
+  vertical-align: middle;
+}

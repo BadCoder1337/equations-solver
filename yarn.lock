@@ -8101,9 +8101,9 @@ react-konva@^16.10.1-0:
     react-reconciler "^0.22.1"
     scheduler "^0.16.1"
 
-"react-mathquill@https://github.com/BadCoder1337/react-mathquill#e375fb6":
+"react-mathquill@https://github.com/BadCoder1337/react-mathquill#9e8ed4d":
   version "0.1.9"
-  resolved "https://github.com/BadCoder1337/react-mathquill#e375fb6b11447d0f95aec87e1a8d211d1dd89e78"
+  resolved "https://github.com/BadCoder1337/react-mathquill#9e8ed4d5ebab49fa4364ccacb67ec72771590d17"
   dependencies:
     "@edtr-io/mathquill" "^0.11.0"
     jquery "^3.4.1"
@@ -8268,6 +8268,11 @@ recursive-readdir@2.2.2:
   integrity sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg==
   dependencies:
     minimatch "3.0.4"
+
+reflect-metadata@0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerate-unicode-properties@^8.1.0:
   version "8.1.0"
@@ -9598,10 +9603,9 @@ uglify-js@^3.1.4:
     commander "~2.20.0"
     source-map "~0.6.1"
 
-undux@^5.0.0-beta.22:
+"undux@https://github.com/BadCoder1337/undux#7525d8b":
   version "5.0.0-beta.22"
-  resolved "https://registry.yarnpkg.com/undux/-/undux-5.0.0-beta.22.tgz#aa7c51d826fbe8477afd49cf252cf60ca751e98e"
-  integrity sha512-uiiw9mNmhjq49im0yCwm5kdCs3iQYficgFrnI0KCKQFqVYs53uzC/iT++2F1lqgE2eVfadMTJwx9q2WfpWSafA==
+  resolved "https://github.com/BadCoder1337/undux#7525d8beb4491e4424d0ba51936282dc8f9bb85c"
   dependencies:
     rxjs-observable "^0.0.7"
 

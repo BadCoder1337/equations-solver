@@ -1,0 +1,19 @@
+.MathBoard {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+  align-content: space-around;
+}
+
+.MathBoard-buttons {
+  align-self: stretch;
+  display: flex;
+  padding: 5px;
+  margin: 10px;
+  background-color: blueviolet;
+}
+
+.MathBoard-buttons > * {
+  margin: auto;
+}
