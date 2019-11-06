@@ -26,7 +26,7 @@ Object.assign(initialState, loadState());
 
 export const Store = createStore(initialState);
 withEffects(Store);
-export const StoreHOC = connect(Store);
+export const withStore = connect(Store);
 
 export interface IStoreProps {
     store: UnduxStore<IState>;

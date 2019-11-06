@@ -1,5 +1,6 @@
 import React from 'react';
-import { IStoreProps, StoreHOC } from '../../state/store';
+import { IStoreProps, withStore } from '../../state/store';
+import Control from '../Control';
 import Formula from '../Formula';
 import Graph from '../Graph';
 import MathBoard from '../MathBoard';
@@ -13,6 +14,7 @@ class App extends React.Component<IStoreProps> {
         <header className="App-header">
           <Graph />
           <Formula />
+          <Control />
           <MathBoard />
           {/* <div onClick={() => store.set('step')(store.get('step') + 0.1)}>
             Edit <code>src/App.tsx</code> and save to {store.get('step')}.
@@ -23,4 +25,4 @@ class App extends React.Component<IStoreProps> {
   }
 }
 
-export default StoreHOC(App);
+export default withStore(App);

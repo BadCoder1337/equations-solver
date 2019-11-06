@@ -1,6 +1,6 @@
 import React from 'react';
 import { MathQuillStatic } from 'react-mathquill';
-import { IStoreProps, StoreHOC } from '../../state/store';
+import { IStoreProps, withStore } from '../../state/store';
 import './MathBoard.css';
 
 // interface IState {
@@ -30,4 +30,4 @@ class MathBoard extends React.Component<IStoreProps /* IState */> {
     }
 }
 
-export default StoreHOC(MathBoard);
+export default withStore(MathBoard);

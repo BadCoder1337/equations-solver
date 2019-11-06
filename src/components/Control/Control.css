@@ -1,0 +1,19 @@
+.Control {
+  display: flex;
+  flex-direction: column;
+}
+
+.Control > * {
+  margin: 5px;
+}
+
+.Control-panel {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.Control-panel > * {
+  font-size: 18px;
+}
