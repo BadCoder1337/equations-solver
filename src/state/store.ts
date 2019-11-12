@@ -9,17 +9,24 @@ export interface IState {
     step: number;
     eps: number;
     calculationMethod: number;
-    mathField: () => IMathField | null;
-    evaluatex: () => EvalFunc | null;
 }
+
+export interface IObjects {
+    mathField: IMathField;
+    evaluatex: EvalFunc;
+}
+
+export interface IStoreProps {
+    store: UnduxStore<IState>;
+}
+
+export type StoreEffects = Effects<IState>;
 
 const initialState: IState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.001,
-    calculationMethod: 0,
-    mathField: () => null,
-    evaluatex: () => null,
+    calculationMethod: 0
 };
 
 if (!loadState()) {
@@ -32,8 +39,8 @@ export const Store = createStore(initialState);
 withEffects(Store);
 export const withStore = connect(Store);
 
-export interface IStoreProps {
-    store: UnduxStore<IState>;
-}
+export const actions = {
+    // calculate:
+};
 
-export type StoreEffects = Effects<IState>;
+export const objects: Partial<IObjects>  = {};

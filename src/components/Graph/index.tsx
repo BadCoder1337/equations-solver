@@ -29,11 +29,13 @@ class Graph extends React.Component<any, IState> {
 
   @Throttle(isMobile ? 1000 : 250)
   public drawCanvas() {
-      const canvas = this.canvas.current!;
+    const canvas = this.canvas.current;
+    if (canvas) {
       const ctx = canvas.getContext('2d')!;
       // ctx.fillRect(0,0, 100, 100);
       ctx.font = '48px Verdana';
       ctx.fillText('REACT', 0, 48);
+    }
   }
 
   public resizeCanvas() {

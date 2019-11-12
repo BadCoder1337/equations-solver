@@ -1,6 +1,6 @@
 import React from 'react';
 import { MathQuill, MathQuillStatic } from 'react-mathquill';
-import { IStoreProps, withStore } from '../../state/store';
+import { IStoreProps, objects, withStore } from '../../state/store';
 import './Formula.css';
 
 interface IState {
@@ -21,7 +21,7 @@ class Formula extends React.Component<IStoreProps, IState> {
                 <MathQuill
                     latex={store.get('formula')}
                     onChange={mathField => store.set('formula')(mathField.latex())}
-                    mathquillDidMount={mathField => store.set('mathField')(() => mathField)}
+                    mathquillDidMount={mathField => objects.mathField = mathField}
                 />
                 <MathQuillStatic
                     latex="=0,\ "

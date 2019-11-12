@@ -1,6 +1,9 @@
 import Evaluate from 'evaluatex';
 import { saveState } from './local-storage';
-import { StoreEffects } from './store';
+import { objects, StoreEffects } from './store';
+
+// @ts-ignore
+window.evaluatex = Evaluate;
 
 const withEffects: StoreEffects = store => {
   // store
@@ -10,7 +13,7 @@ const withEffects: StoreEffects = store => {
 
   store
     .on('formula')
-    .subscribe(f => store.set('evaluatex')(() => Evaluate(f)));
+    .subscribe(f => objects.evaluatex = Evaluate(f, undefined, { latex: true }));
 
   store
     .onAll()

@@ -20,6 +20,7 @@ class Control extends React.Component<IStoreProps/* , IState */> {
                         <option value="3">Метод секущих</option>
                         <option value="4">Метод простых итераций</option>
                     </select>
+                    <button className="Control-button">График</button>
                     <button className="Control-button">Рассчитать</button>
                 </div>
             </div>
