@@ -7,7 +7,7 @@ import './MathBoard.css';
 //     editRaw: boolean;
 // }
 
-const operators = ['☐^2', 'x^{☐}', '\\sqrt{☐}', '\\sqrt[☐]{☐}', '\\frac{☐}{☐}', '\\log_{☐}', '\\pi'];
+const operators = ['\\pi', '☐^2', 'x^{☐}', '\\sqrt{☐}', '\\sqrt[☐]{☐}', '\\frac{☐}{☐}', '\\log_{☐}'];
 
 class MathBoard extends React.Component<IStoreProps /* IState */> {
     public state = { editRaw: false };
