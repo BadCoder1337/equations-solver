@@ -3800,9 +3800,9 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-"evaluatex@https://github.com/BadCoder1337/evaluatex#0946a53":
+"evaluatex@https://github.com/BadCoder1337/evaluatex#f377dd3":
   version "2.1.2"
-  resolved "https://github.com/BadCoder1337/evaluatex#0946a536014fda1f2df1d4bd05441bb1aa1e7f55"
+  resolved "https://github.com/BadCoder1337/evaluatex#f377dd3bc2421037b44800ce905a05282e22b738"
 
 eventemitter3@^4.0.0:
   version "4.0.0"
