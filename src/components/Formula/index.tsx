@@ -24,14 +24,20 @@ class Formula extends React.Component<IStoreProps, IState> {
                     mathquillDidMount={mathField => store.set('mathField')(() => mathField)}
                 />
                 <MathQuillStatic
-                    latex="=0,\ e="
+                    latex="=0,\ "
+                />
+                <MathQuillStatic
+                    latex="e="
                 />
                 <MathQuill
                     latex={store.get('eps').toString()}
                     onChange={mathField => store.set('eps')(parseFloat(mathField.latex()))}
                 />
                 <MathQuillStatic
-                    latex=",\ \Delta="
+                    latex=",\ "
+                />
+                <MathQuillStatic
+                    latex="\Delta="
                 />
                 <MathQuill
                     latex={store.get('step').toString()}

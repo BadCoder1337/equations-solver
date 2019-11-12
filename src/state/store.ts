@@ -1,4 +1,4 @@
-
+import { func as EvalFunc } from 'evaluatex';
 import { IMathField } from 'react-mathquill';
 import { connect, createStore, Effects, Store as UnduxStore } from 'undux';
 import withEffects from './effects';
@@ -8,14 +8,18 @@ export interface IState {
     formula: string;
     step: number;
     eps: number;
+    calculationMethod: number;
     mathField: () => IMathField | null;
+    evaluatex: () => EvalFunc | null;
 }
 
 const initialState: IState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.001,
-    mathField: () => null
+    calculationMethod: 0,
+    mathField: () => null,
+    evaluatex: () => null,
 };
 
 if (!loadState()) {
