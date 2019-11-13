@@ -13,7 +13,15 @@ const withEffects: StoreEffects = store => {
 
   store
     .on('formula')
-    .subscribe(f => objects.evaluatex = Evaluate(f, undefined, { latex: true }));
+    .subscribe(f => {
+      try {
+        objects.evaluatex = Evaluate(f, undefined, { latex: true }
+        );
+        console.log(objects.evaluatex({x: 2}));
+      } catch (error) {
+        console.log(error.toString().split('\n')[0]);
+      }
+    });
 
   store
     .onAll()

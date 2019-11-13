@@ -33,7 +33,7 @@ class Graph extends React.Component<any, IState> {
     if (canvas) {
       const ctx = canvas.getContext('2d')!;
       // ctx.fillRect(0,0, 100, 100);
-      ctx.font = '48px Verdana';
+      ctx.font = '48px "Lucida Console", Monaco, monospace';
       ctx.fillText('REACT', 0, 48);
     }
   }

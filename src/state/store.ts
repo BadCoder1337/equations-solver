@@ -1,4 +1,4 @@
-import { func as EvalFunc } from 'evaluatex';
+import { EvalFunc } from 'evaluatex';
 import { IMathField } from 'react-mathquill';
 import { connect, createStore, Effects, Store as UnduxStore } from 'undux';
 import withEffects from './effects';

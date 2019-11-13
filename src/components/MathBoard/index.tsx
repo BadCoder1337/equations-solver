@@ -20,7 +20,7 @@ class MathBoard extends React.Component<IStoreProps /* IState */> {
                     <div
                         key={`btn${i}`}
                         className="MathBoard-buttons"
-                        onClick={() => objects.mathField?.write(op.replace(/☐/g, ''))}
+                        onClick={() => objects.mathField && objects.mathField.write(op.replace(/☐/g, ''))}
                     >
                         <MathQuillStatic latex={op} />
                     </div>
