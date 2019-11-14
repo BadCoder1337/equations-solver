@@ -16,13 +16,13 @@ class App extends React.Component<IStoreProps> {
           <Formula />
           <Control />
           <MathBoard />
-          {/* <div onClick={() => store.set('step')(store.get('step') + 0.1)}>
-            Edit <code>src/App.tsx</code> and save to {store.get('step')}.
-          </div> */}
         </header>
       </div>
     );
   }
 }
+/* <div onClick={() => store.set('step')(store.get('step') + 0.1)}>
+  Edit <code>src/App.tsx</code> and save to {store.get('step')}.
+</div> */
 
 export default withStore(App);

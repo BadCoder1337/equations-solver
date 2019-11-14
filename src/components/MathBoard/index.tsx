@@ -9,25 +9,22 @@ import './MathBoard.css';
 
 const operators = ['\\pi', '☐^2', 'x^{☐}', '\\sqrt{☐}', '\\sqrt[☐]{☐}', '\\frac{☐}{☐}', '\\log_{☐}'];
 
-class MathBoard extends React.Component<IStoreProps /* IState */> {
-    public state = { editRaw: false };
+const writeLaTex = (op: string) => () => objects.mathField?.write(op.replace(/☐/g, ''));
 
-    public render() {
-        const { store } = this.props;
-        return (
-            <div className="MathBoard">
-                {operators.map((op, i) => (
-                    <div
-                        key={`btn${i}`}
-                        className="MathBoard-buttons"
-                        onClick={() => objects.mathField?.write(op.replace(/☐/g, ''))}
-                    >
-                        <MathQuillStatic latex={op} />
-                    </div>
-                ))}
-            </div>
-        );
-    }
-}
+const Button = (op: string, i: number) => (
+    <div
+        key={`btn${i}`}
+        className="MathBoard-buttons"
+        onClick={writeLaTex(op)}
+    >
+        <MathQuillStatic latex={op} />
+    </div>
+);
+
+const MathBoard: React.FC<IStoreProps> = ({ store }) => (
+    <div className="MathBoard">
+        {operators.map(Button)}
+    </div>
+);
 
 export default withStore(MathBoard);

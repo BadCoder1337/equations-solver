@@ -1,13 +1,17 @@
 import React from 'react';
-import { MathQuill, MathQuillStatic } from 'react-mathquill';
-import { IStoreProps, objects, withStore } from '../../state/store';
+import { IMathField, MathQuill, MathQuillStatic } from 'react-mathquill';
+import { IState, IStoreProps, objects, Store, withStore } from '../../state/store';
 import './Formula.css';
 
-interface IState {
+interface IComponentState {
     editRaw: boolean;
 }
 
-class Formula extends React.Component<IStoreProps, IState> {
+const writeFloat = (param: keyof IState) => (mathField: IMathField) => Store.set(param)(parseFloat(mathField.latex()));
+const writeFormula = (mathField: IMathField) => Store.set('formula')(mathField.latex());
+const saveMQ = (mathField: IMathField) => objects.mathField = mathField;
+
+class Formula extends React.Component<IStoreProps, IComponentState> {
     public state = { editRaw: false };
 
     public toggleRaw = () => {
@@ -20,8 +24,8 @@ class Formula extends React.Component<IStoreProps, IState> {
             <div className="Formula">
                 <MathQuill
                     latex={store.get('formula')}
-                    onChange={mathField => store.set('formula')(mathField.latex())}
-                    mathquillDidMount={mathField => objects.mathField = mathField}
+                    onChange={writeFormula}
+                    mathquillDidMount={saveMQ}
                 />
                 <MathQuillStatic
                     latex="=0,\ "
@@ -31,7 +35,7 @@ class Formula extends React.Component<IStoreProps, IState> {
                 />
                 <MathQuill
                     latex={store.get('eps').toString()}
-                    onChange={mathField => store.set('eps')(parseFloat(mathField.latex()))}
+                    onChange={writeFloat('eps')}
                 />
                 <MathQuillStatic
                     latex=",\ "
@@ -41,7 +45,7 @@ class Formula extends React.Component<IStoreProps, IState> {
                 />
                 <MathQuill
                     latex={store.get('step').toString()}
-                    onChange={mathField => store.set('step')(parseFloat(mathField.latex()))}
+                    onChange={writeFloat('step')}
                 />
             </div>
         );
