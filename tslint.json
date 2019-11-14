@@ -1,6 +1,6 @@
 {
     "defaultSeverity": "error",
-    "extends": "tslint:latest",
+    "extends": ["tslint:latest", "tslint-react"],
     "rules": {
         "max-line-length": false,
         "quotemark": [true, "single", "jsx-double"],
