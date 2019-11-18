@@ -1,5 +1,5 @@
 import React from 'react';
-import { IStoreProps, Store, withStore } from '../../state/store';
+import { actions, IStoreProps, Store, withStore } from '../../state/store';
 import './Control.css';
 
 // interface IState {
@@ -21,8 +21,8 @@ class Control extends React.Component<IStoreProps/* , IState */> {
                         <option value="3">Метод секущих</option>
                         <option value="4">Метод простых итераций</option>
                     </select>
-                    <button className="Control-button">График</button>
-                    <button className="Control-button">Рассчитать</button>
+                    <button onClick={actions.draw} className="Control-button">График</button>
+                    <button onClick={actions.calculate} className="Control-button">Рассчитать</button>
                 </div>
             </div>
         );

@@ -1,3 +1,7 @@
-.Graph {
+.Graph-canvas {
   background-color: brown;
+}
+
+.Graph-stage {
+  background-color: cadetblue;
 }

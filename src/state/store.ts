@@ -1,4 +1,4 @@
-import { EvalFunc } from 'evaluatex';
+import evaluatex, { EvalFunc } from 'evaluatex';
 import { IMathField } from 'react-mathquill';
 import { connect, createStore, Effects, Store as UnduxStore } from 'undux';
 import withEffects from './effects';
@@ -9,11 +9,18 @@ export interface IState {
     step: number;
     eps: number;
     calculationMethod: number;
+    zoom: [number, number];
+    offset: [number, number];
 }
 
 export interface IObjects {
     mathField: IMathField;
     evaluatex: EvalFunc;
+}
+
+export interface IActions {
+    calculate: () => void;
+    draw: () => void;
 }
 
 export interface IStoreProps {
@@ -26,7 +33,9 @@ const initialState: IState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.001,
-    calculationMethod: 0
+    calculationMethod: 0,
+    zoom: [100, 100],
+    offset: [0, 0]
 };
 
 if (!loadState()) {
@@ -39,8 +48,16 @@ export const Store = createStore(initialState);
 withEffects(Store);
 export const withStore = connect(Store);
 
-export const actions = {
-    // calculate:
+export const actions: Partial<IActions> = {
+
 };
 
-export const objects: Partial<IObjects>  = {};
+let initialEvaluatex;
+
+try {
+    initialEvaluatex = evaluatex(initialState.formula);
+} catch (err) {/* */}
+
+export const objects: Partial<IObjects>  = {
+    evaluatex: initialEvaluatex,
+};
