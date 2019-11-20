@@ -19,6 +19,7 @@ const withEffects: StoreEffects = store => {
         );
         console.log(objects.evaluatex({x: 2}));
       } catch (error) {
+        objects.evaluatex = null;
         console.log(error.toString().split('\n')[0]);
       }
     });

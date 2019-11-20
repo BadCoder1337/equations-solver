@@ -22,11 +22,15 @@ class Formula extends React.Component<IStoreProps, IComponentState> {
         const { store } = this.props;
         return (
             <div className="Formula">
-                <MathQuill
-                    latex={store.get('formula')}
-                    onChange={writeFormula}
-                    mathquillDidMount={saveMQ}
-                />
+                {/* <span > */}
+                    <MathQuill
+                    // @ts-ignore
+                        // className={typeof objects.evaluatex !== 'object' ? '' : 'Formula-error'}
+                        latex={store.get('formula')}
+                        onChange={writeFormula}
+                        mathquillDidMount={saveMQ}
+                    />
+                {/* </span> */}
                 <MathQuillStatic
                     latex="=0,\ "
                 />

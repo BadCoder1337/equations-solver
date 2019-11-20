@@ -37,7 +37,7 @@ class Graph extends React.Component<IStoreProps, IState> {
     console.log('Draw called');
     if (objects.evaluatex) {
       console.log('Evaluatex OK');
-      const zoom = this.props.store.get('zoom');
+      const scale = this.props.store.get('scale');
       const offset = this.props.store.get('offset');
       const step = this.props.store.get('step');
       const points = [];
@@ -61,23 +61,31 @@ class Graph extends React.Component<IStoreProps, IState> {
     event.evt.preventDefault();
   }
 
+  public handleDrag(event: KonvaEventObject<DragEvent>) {
+    console.log(event.evt);
+  }
+
   public render() {
     const state = this.state;
     const store = this.props.store;
+    const center = {
+      x: state.width / 2 + store.get('offset')[0],
+      y: state.height / 2 + store.get('offset')[1],
+    };
     return (
         <div>
-          <Stage onWheel={this.handleModifiers} onDragStart={console.log} onDragEnd={console.log} className="Graph-stage" {...state}>
+          <Stage onWheel={this.handleModifiers} onDragStart={console.log} onDragEnd={this.handleDrag} className="Graph-stage" {...state}>
             <Layer>
-              <Text text={`react-konva H:${state.height.toFixed(2)} W:${state.width.toFixed(2)} Z:${store.get('zoom')} O:${store.get('offset')}`} fontSize={12} fontFamily={`"Lucida Console", Monaco, monospace`} />
+              <Text text={`react-konva H:${state.height.toFixed(2)} W:${state.width.toFixed()} S:${store.get('scale')} O:${store.get('offset')}`} fontSize={12} fontFamily={`"Lucida Console", Monaco, monospace`} />
             </Layer>
             <Layer draggable>
               <Group>
                 <Rect fill="transparent" x={0} y={0} width={state.width} height={state.height} />
-                <Line stroke="black" strokeWidth={2} x={0} y={state.height / 2} points={[-9000, 0, 9000, 0]} />
-                <Line stroke="black" strokeWidth={2} x={state.width / 2} y={0} points={[0, -9000, 0, 9000]} />
+                <Line stroke="black" strokeWidth={2} {...center} points={[-9000, 0, 9000, 0]} />
+                <Line stroke="black" strokeWidth={2} {...center} points={[0, -9000, 0, 9000]} />
               </Group>
               <Group>
-                <Line stroke="black" strokeWidth={2} x={0} y={state.height / 2} points={this.state.points}/>
+                <Line stroke="black" strokeWidth={2} {...center} points={this.state.points}/>
               </Group>
             </Layer>
           </Stage>

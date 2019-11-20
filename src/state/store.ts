@@ -9,13 +9,13 @@ export interface IState {
     step: number;
     eps: number;
     calculationMethod: number;
-    zoom: [number, number];
+    scale: [number, number];
     offset: [number, number];
 }
 
 export interface IObjects {
     mathField: IMathField;
-    evaluatex: EvalFunc;
+    evaluatex: EvalFunc | null;
 }
 
 export interface IActions {
@@ -34,7 +34,7 @@ const initialState: IState = {
     step: 0.01,
     eps: 0.001,
     calculationMethod: 0,
-    zoom: [100, 100],
+    scale: [100, 100],
     offset: [0, 0]
 };
 
