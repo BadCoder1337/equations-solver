@@ -10,7 +10,7 @@ const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /W
 interface IState {
   width: number;
   height: number;
-  points: number[];
+  points: Array<[number, number]>;
 }
 
 class Graph extends React.Component<IStoreProps, IState> {
@@ -18,6 +18,9 @@ class Graph extends React.Component<IStoreProps, IState> {
     super(props);
 
     this.resizeCanvas = this.resizeCanvas.bind(this);
+    this.resetTransform = this.resetTransform.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     actions.draw = this.drawCanvas.bind(this);
   }
 
@@ -40,10 +43,10 @@ class Graph extends React.Component<IStoreProps, IState> {
       const scale = this.props.store.get('scale');
       const offset = this.props.store.get('offset');
       const step = this.props.store.get('step');
-      const points = [];
+      const points: Array<[number, number]> = [];
       const corners = [-100, 100];
       for (let x = corners[0]; x < corners[1]; x += step) {
-        points.push(x, objects.evaluatex({ x }));
+        points.push([x, objects.evaluatex({ x })]);
       }
       this.setState({ points });
     }
@@ -55,41 +58,59 @@ class Graph extends React.Component<IStoreProps, IState> {
     // this.drawCanvas();
   }
 
-  public handleModifiers(event: KonvaEventObject<WheelEvent>) {
+  public handleScroll(event: KonvaEventObject<WheelEvent>) {
     const keys = ['Shift', 'Alt', 'Control'];
     console.log(keys.map(key => event.evt.getModifierState(key)));
     event.evt.preventDefault();
   }
 
   public handleDrag(event: KonvaEventObject<DragEvent>) {
-    console.log(event.evt);
+    const absPos = event.target.getAbsolutePosition();
+    this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height])
+  }
+
+  public resetTransform() {
+    this.props.store.set('offset')([0.5, 0.5])
+    this.props.store.set('scale')([0, 0])
   }
 
   public render() {
     const state = this.state;
     const store = this.props.store;
     const center = {
-      x: state.width / 2 + store.get('offset')[0],
-      y: state.height / 2 + store.get('offset')[1],
+      x: state.width * store.get('offset')[0],
+      y: state.height * store.get('offset')[1],
     };
     return (
-        <div>
-          <Stage onWheel={this.handleModifiers} onDragStart={console.log} onDragEnd={this.handleDrag} className="Graph-stage" {...state}>
-            <Layer>
-              <Text text={`react-konva H:${state.height.toFixed(2)} W:${state.width.toFixed()} S:${store.get('scale')} O:${store.get('offset')}`} fontSize={12} fontFamily={`"Lucida Console", Monaco, monospace`} />
-            </Layer>
-            <Layer draggable>
-              <Group>
-                <Rect fill="transparent" x={0} y={0} width={state.width} height={state.height} />
-                <Line stroke="black" strokeWidth={2} {...center} points={[-9000, 0, 9000, 0]} />
-                <Line stroke="black" strokeWidth={2} {...center} points={[0, -9000, 0, 9000]} />
-              </Group>
-              <Group>
-                <Line stroke="black" strokeWidth={2} {...center} points={this.state.points}/>
-              </Group>
-            </Layer>
-          </Stage>
-        </div>
+      <div>
+        <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
+          <Layer onDragEnd={this.handleDrag} {...center} draggable>
+            <Group>
+              <Rect fill="green" x={-center.x} y={-center.y} width={state.width} height={state.height} />
+              <Rect fill="red" width={state.width} height={state.height} />
+              <Line stroke="black" strokeWidth={2} points={[-9000, 0, 9000, 0]} />
+              <Line stroke="black" strokeWidth={2} points={[0, -9000, 0, 9000]} />
+            </Group>
+            <Group>
+              <Line stroke="black" strokeWidth={2} points={this.state.points.flat()} scaleY={-1} />
+            </Group>
+          </Layer>
+          <Layer>
+            <Text onClick={this.resetTransform} text={
+              'react-konva H:'
+              + state.height.toFixed(2)
+              + ' W:'
+              + state.width.toFixed(2)
+              + ' S:'
+              + store.get('scale').map(v => v.toFixed(2))
+              + ' O:'
+              + store.get('offset').map(v => v.toFixed(2))
+              + ' C:'
+              + Object.values(center).map(v => v.toFixed(2))
+            } fontSize={12} fontFamily={`"Lucida Console", Monaco, monospace`} />
+          </Layer>
+        </Stage>
+      </div>
     );
   }
 }

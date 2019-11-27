@@ -35,7 +35,7 @@ const initialState: IState = {
     eps: 0.001,
     calculationMethod: 0,
     scale: [100, 100],
-    offset: [0, 0]
+    offset: [0.5, 0.5]
 };
 
 if (!loadState()) {
