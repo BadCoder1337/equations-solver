@@ -3,5 +3,6 @@
 }
 
 .Formula-error {
-  box-shadow: 0px 0px 20px 10px red;
+  box-shadow: 0px 0px 5px 5px red !important;
+  border-radius: 1px;
 }
