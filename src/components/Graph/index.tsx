@@ -1,11 +1,14 @@
+import { Layer } from 'konva/types/Layer';
 import { KonvaEventObject } from 'konva/types/Node';
+import { Stage } from 'konva/types/Stage';
 import React from 'react';
-import { Group, Layer, Line, Rect, Stage, Text } from 'react-konva';
+import * as ReactKonva from 'react-konva';
 import Throttle from '../../decorators/throttle';
 import { actions, IStoreProps, objects, withStore } from '../../state/store';
 import './Graph.css';
 
 const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /Windows Phone/].some(rexp => rexp.test(navigator.userAgent));
+const scaleFactor = 1.01;
 
 interface IState {
   width: number;
@@ -59,19 +62,43 @@ class Graph extends React.Component<IStoreProps, IState> {
   }
 
   public handleScroll(event: KonvaEventObject<WheelEvent>) {
-    const keys = ['Shift', 'Alt', 'Control'];
-    console.log(keys.map(key => event.evt.getModifierState(key)));
     event.evt.preventDefault();
+    const layer = event.target.getLayer() as Layer;
+    if (layer && layer.attrs.id === 'graph') {
+      const keys = ['Control', 'Alt', 'Shift'];
+      const modifiers = keys.map(key => event.evt.getModifierState(key));
+      const stage = layer.getStage() as Stage;
+      console.log(layer);
+      const oldScale = layer.scale();
+      const mousePos = {
+        x: stage.getPointerPosition()!.x / oldScale.x - layer.x() / oldScale.x,
+        y: stage.getPointerPosition()!.y / oldScale.y - layer.y() / oldScale.y
+      };
+      const newScale = {
+        x: (modifiers[0] || modifiers[1])
+          ? (event.evt.deltaY > 0 ? oldScale.x * scaleFactor : oldScale.x / scaleFactor)
+          : oldScale.x,
+        y: (modifiers[0] || modifiers[2])
+          ? (event.evt.deltaY > 0 ? oldScale.y * scaleFactor : oldScale.y / scaleFactor)
+          : oldScale.y,
+      };
+      const newPos = {
+        x: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
+        y: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
+      };
+      console.log(oldScale, mousePos, newScale, newPos);
+    }
+    // console.log();
   }
 
   public handleDrag(event: KonvaEventObject<DragEvent>) {
     const absPos = event.target.getAbsolutePosition();
-    this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height])
+    this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height]);
   }
 
   public resetTransform() {
-    this.props.store.set('offset')([0.5, 0.5])
-    this.props.store.set('scale')([0, 0])
+    this.props.store.set('offset')([0.5, 0.5]);
+    this.props.store.set('scale')([0, 0]);
   }
 
   public render() {
@@ -81,10 +108,11 @@ class Graph extends React.Component<IStoreProps, IState> {
       x: state.width * store.get('offset')[0],
       y: state.height * store.get('offset')[1],
     };
+    const { Stage, Layer, Group, Rect, Line, Text } = ReactKonva;
     return (
       <div>
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer onDragEnd={this.handleDrag} {...center} draggable>
+          <Layer id="graph" onDragEnd={this.handleDrag} {...center} draggable>
             <Group>
               <Rect fill="green" x={-center.x} y={-center.y} width={state.width} height={state.height} />
               <Rect fill="red" width={state.width} height={state.height} />
@@ -95,7 +123,7 @@ class Graph extends React.Component<IStoreProps, IState> {
               <Line stroke="black" strokeWidth={2} points={this.state.points.flat()} scaleY={-1} />
             </Group>
           </Layer>
-          <Layer>
+          <Layer id="text">
             <Text onClick={this.resetTransform} text={
               'react-konva H:'
               + state.height.toFixed(2)
