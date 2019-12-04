@@ -12,7 +12,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-konva": "^16.10.1-0",
-    "react-mathquill": "https://github.com/BadCoder1337/react-mathquill#9e8ed4d",
+    "react-mathquill": "https://github.com/BadCoder1337/react-mathquill#0f829e3",
     "react-scripts": "3.2.0",
     "reflect-metadata": "0.1.13",
     "typescript": "3.7.2",

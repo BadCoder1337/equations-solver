@@ -48,9 +48,11 @@ class Graph extends React.Component<IStoreProps, IState> {
       const step = this.props.store.get('step');
       const points: Array<[number, number]> = [];
       const corners = [-100, 100];
-      for (let x = corners[0]; x < corners[1]; x += step) {
-        points.push([x, objects.evaluatex({ x })]);
-      }
+      try {
+        for (let x = corners[0]; x < corners[1]; x += step) {
+          points.push([x, objects.evaluatex({ x })]);
+        }
+      } catch (error) {/* */}
       this.setState({ points });
     }
   }
@@ -124,18 +126,24 @@ class Graph extends React.Component<IStoreProps, IState> {
             </Group>
           </Layer>
           <Layer id="text">
-            <Text onClick={this.resetTransform} text={
-              'react-konva H:'
-              + state.height.toFixed(2)
-              + ' W:'
-              + state.width.toFixed(2)
-              + ' S:'
-              + store.get('scale').map(v => v.toFixed(2))
-              + ' O:'
-              + store.get('offset').map(v => v.toFixed(2))
-              + ' C:'
-              + Object.values(center).map(v => v.toFixed(2))
-            } fontSize={12} fontFamily={`"Lucida Console", Monaco, monospace`} />
+            <Text
+              onClick={this.resetTransform}
+              // tslint:disable-next-line:jsx-no-multiline-js
+              text={
+                'react-konva H:'
+                + state.height.toFixed(2)
+                + ' W:'
+                + state.width.toFixed(2)
+                + ' S:'
+                + store.get('scale').map(v => v.toFixed(2))
+                + ' O:'
+                + store.get('offset').map(v => v.toFixed(2))
+                + ' C:'
+                + Object.values(center).map(v => v.toFixed(2))
+              }
+              fontSize={12}
+              fontFamily={`"Lucida Console", Monaco, monospace`}
+            />
           </Layer>
         </Stage>
       </div>
