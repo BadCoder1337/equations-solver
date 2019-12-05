@@ -1,6 +1,6 @@
-import { Layer } from 'konva/types/Layer';
+import { Layer as LayerType } from 'konva/types/Layer';
 import { KonvaEventObject } from 'konva/types/Node';
-import { Stage } from 'konva/types/Stage';
+import { Stage as StageType } from 'konva/types/Stage';
 import React from 'react';
 import * as ReactKonva from 'react-konva';
 import Throttle from '../../decorators/throttle';
@@ -8,7 +8,7 @@ import { actions, IStoreProps, objects, withStore } from '../../state/store';
 import './Graph.css';
 
 const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /Windows Phone/].some(rexp => rexp.test(navigator.userAgent));
-const scaleFactor = 1.01;
+const scaleFactor = 1.1;
 
 interface IState {
   width: number;
@@ -43,16 +43,18 @@ class Graph extends React.Component<IStoreProps, IState> {
     console.log('Draw called');
     if (objects.evaluatex) {
       console.log('Evaluatex OK');
-      const scale = this.props.store.get('scale');
-      const offset = this.props.store.get('offset');
+      // const scale = this.props.store.get('scale');
+      // const offset = this.props.store.get('offset');
       const step = this.props.store.get('step');
       const points: Array<[number, number]> = [];
-      const corners = [-100, 100];
-      try {
-        for (let x = corners[0]; x < corners[1]; x += step) {
+      const corners = [-5, 5];
+      for (let x = corners[0]; x < corners[1]; x += step) {
+        try {
           points.push([x, objects.evaluatex({ x })]);
+        } catch (error) {
+          console.log('errrr');
         }
-      } catch (error) {/* */}
+      }
       this.setState({ points });
     }
   }
@@ -65,12 +67,11 @@ class Graph extends React.Component<IStoreProps, IState> {
 
   public handleScroll(event: KonvaEventObject<WheelEvent>) {
     event.evt.preventDefault();
-    const layer = event.target.getLayer() as Layer;
+    const layer = event.target.getLayer() as LayerType;
     if (layer && layer.attrs.id === 'graph') {
       const keys = ['Control', 'Alt', 'Shift'];
       const modifiers = keys.map(key => event.evt.getModifierState(key));
-      const stage = layer.getStage() as Stage;
-      console.log(layer);
+      const stage = layer.getStage() as StageType;
       const oldScale = layer.scale();
       const mousePos = {
         x: stage.getPointerPosition()!.x / oldScale.x - layer.x() / oldScale.x,
@@ -88,7 +89,7 @@ class Graph extends React.Component<IStoreProps, IState> {
         x: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
         y: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
       };
-      console.log(oldScale, mousePos, newScale, newPos);
+      this.props.store.set('scale')([newScale.x, newScale.y]);
     }
     // console.log();
   }
@@ -100,29 +101,40 @@ class Graph extends React.Component<IStoreProps, IState> {
 
   public resetTransform() {
     this.props.store.set('offset')([0.5, 0.5]);
-    this.props.store.set('scale')([0, 0]);
+    this.props.store.set('scale')([100, 100]);
   }
 
   public render() {
     const state = this.state;
     const store = this.props.store;
+
     const center = {
       x: state.width * store.get('offset')[0],
       y: state.height * store.get('offset')[1],
     };
+    const scale = {
+      x: store.get('scale')[0],
+      y: store.get('scale')[1]
+    };
+    const strokeWidth = 2 / Math.sqrt(scale.x * scale.y);
+
+    const withScale = { scale };
+    const withStrokeWidth = { strokeWidth };
+
     const { Stage, Layer, Group, Rect, Line, Text } = ReactKonva;
+
     return (
       <div>
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer id="graph" onDragEnd={this.handleDrag} {...center} draggable>
+          <Layer {...withScale} id="graph" onDragEnd={this.handleDrag} {...center} draggable>
             <Group>
               <Rect fill="green" x={-center.x} y={-center.y} width={state.width} height={state.height} />
               <Rect fill="red" width={state.width} height={state.height} />
-              <Line stroke="black" strokeWidth={2} points={[-9000, 0, 9000, 0]} />
-              <Line stroke="black" strokeWidth={2} points={[0, -9000, 0, 9000]} />
+              <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} />
+              <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
             </Group>
             <Group>
-              <Line stroke="black" strokeWidth={2} points={this.state.points.flat()} scaleY={-1} />
+              <Line stroke="black" {...withStrokeWidth} points={this.state.points.flat()} scaleY={-1} />
             </Group>
           </Layer>
           <Layer id="text">
@@ -140,6 +152,7 @@ class Graph extends React.Component<IStoreProps, IState> {
                 + store.get('offset').map(v => v.toFixed(2))
                 + ' C:'
                 + Object.values(center).map(v => v.toFixed(2))
+                + ' Click here to reset.'
               }
               fontSize={12}
               fontFamily={`"Lucida Console", Monaco, monospace`}
