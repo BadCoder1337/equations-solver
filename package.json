@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:headless": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -40,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^6.0.3",
     "tslint": "^5.20.0",
     "tslint-react": "^4.1.0"
   }
