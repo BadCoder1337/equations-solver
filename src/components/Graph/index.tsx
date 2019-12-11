@@ -89,9 +89,10 @@ class Graph extends React.Component<IStoreProps, IState> {
       };
       const newPos = {
         x: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
-        y: -(mousePos.x - stage.getPointerPosition()!.x / newScale.x) * newScale.x,
+        y: -(mousePos.y - stage.getPointerPosition()!.y / newScale.y) * newScale.y,
       };
       this.props.store.set('scale')([newScale.x, newScale.y]);
+      this.props.store.set('offset')([newPos.x / this.state.width, newPos.y / this.state.height]);
     }
     // console.log();
     this.drawCanvas();
