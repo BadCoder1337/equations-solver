@@ -81,10 +81,10 @@ class Graph extends React.Component<IStoreProps, IState> {
       };
       const newScale = {
         x: (modifiers[0] || modifiers[1])
-          ? (event.evt.deltaY > 0 ? oldScale.x * scaleFactor : oldScale.x / scaleFactor)
+          ? (event.evt.deltaY < 0 ? oldScale.x * scaleFactor : oldScale.x / scaleFactor)
           : oldScale.x,
         y: (modifiers[0] || modifiers[2])
-          ? (event.evt.deltaY > 0 ? oldScale.y * scaleFactor : oldScale.y / scaleFactor)
+          ? (event.evt.deltaY < 0 ? oldScale.y * scaleFactor : oldScale.y / scaleFactor)
           : oldScale.y,
       };
       const newPos = {
@@ -140,7 +140,7 @@ class Graph extends React.Component<IStoreProps, IState> {
               <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
             </Group>
             <Group>
-              <Line stroke="black" {...withStrokeWidth} points={this.state.points.flat()} scaleY={-1} />
+              <Line stroke="black" {...withStrokeWidth} points={state.points.flat()} scaleY={-1} />
             </Group>
           </Layer>
           <Layer id="text">
