@@ -8,7 +8,7 @@ const initialState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.001,
-    calculationMethod: 0,
+    solvingMethod: 0,
     scale: [100, 100],
     offset: [0.5, 0.5],
     precisePlot: false,
@@ -22,7 +22,7 @@ export interface IObjects {
 }
 
 export interface IActions {
-    calculate: () => void;
+    solve: () => void;
     draw: () => void;
 }
 
@@ -42,9 +42,7 @@ export const Store = createStore(initialState);
 withEffects(Store);
 export const withStore = connect(Store);
 
-export const actions: Partial<IActions> = {
-
-};
+export const actions: Partial<IActions> = {};
 
 let initialEvaluatex;
 
