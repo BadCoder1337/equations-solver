@@ -38,17 +38,19 @@ class Graph extends React.Component<IStoreProps, IState> {
     window.removeEventListener('resize', this.resizeCanvas);
   }
 
-  @Throttle(isMobile ? 1000 : 250)
+  @Throttle(isMobile ? 1000 : 500)
   public drawCanvas() {
     console.log('Draw called');
     if (objects.evaluatex) {
       console.log('Evaluatex OK');
-      // const scale = this.props.store.get('scale');
-      // const offset = this.props.store.get('offset');
-      const step = this.props.store.get('step');
+      const store = this.props.store;
+      const scale = store.get('scale');
+      const offset = store.get('offset');
+      const step = store.get('step');
       const points: Array<[number, number]> = [];
-      const corners = [-5, 5];
-      for (let x = corners[0]; x < corners[1]; x += step) {
+      const corners = [-this.state.width / scale[0], this.state.width / scale[1]];
+      const scaledStep = store.get('precisePlot') ? step : (corners[1] - corners[0]) / this.state.width;
+      for (let x = corners[0]; x < corners[1]; x += scaledStep) {
         try {
           points.push([x, objects.evaluatex({ x })]);
         } catch (error) {
@@ -59,10 +61,10 @@ class Graph extends React.Component<IStoreProps, IState> {
     }
   }
 
-  @Throttle(isMobile ? 1000 : 250)
+  @Throttle(isMobile ? 1000 : 500)
   public resizeCanvas() {
     this.setState({ width: window.innerWidth * 0.9, height: window.innerHeight * 0.6 });
-    // this.drawCanvas();
+    this.drawCanvas();
   }
 
   public handleScroll(event: KonvaEventObject<WheelEvent>) {
@@ -92,16 +94,19 @@ class Graph extends React.Component<IStoreProps, IState> {
       this.props.store.set('scale')([newScale.x, newScale.y]);
     }
     // console.log();
+    this.drawCanvas();
   }
 
   public handleDrag(event: KonvaEventObject<DragEvent>) {
     const absPos = event.target.getAbsolutePosition();
     this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height]);
+    this.drawCanvas();
   }
 
   public resetTransform() {
     this.props.store.set('offset')([0.5, 0.5]);
     this.props.store.set('scale')([100, 100]);
+    this.drawCanvas();
   }
 
   public render() {
@@ -126,9 +131,9 @@ class Graph extends React.Component<IStoreProps, IState> {
     return (
       <div>
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer {...withScale} id="graph" onDragEnd={this.handleDrag} {...center} draggable>
+          <Layer onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
             <Group>
-              <Rect fill="green" x={-center.x} y={-center.y} width={state.width} height={state.height} />
+              <Rect fill="green" x={-center.x / scale.x} y={-center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
               <Rect fill="red" width={state.width} height={state.height} />
               <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} />
               <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
@@ -152,6 +157,10 @@ class Graph extends React.Component<IStoreProps, IState> {
                 + store.get('offset').map(v => v.toFixed(2))
                 + ' C:'
                 + Object.values(center).map(v => v.toFixed(2))
+                + ' B:'
+                + [-state.width / store.get('scale')[0], state.width / store.get('scale')[1]].map(v => v.toFixed(2))
+                + ' P:'
+                + state.points.length
                 + ' Click here to reset.'
               }
               fontSize={12}

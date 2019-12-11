@@ -1,11 +1,12 @@
 import React from 'react';
-import { actions, IStoreProps, Store, withStore } from '../../state/store';
+import { actions, IState, IStoreProps, Store, withStore } from '../../state/store';
 import './Control.css';
 
 // interface IState {
 //     value: number;
 // }
 const writeCalculationMethod = (event: React.ChangeEvent<HTMLSelectElement>) => Store.set('calculationMethod')(parseInt(event.target.value));
+const writeCheckbox = (param: keyof IState) => (event: React.ChangeEvent<HTMLInputElement>) => Store.set(param)(event.target.checked);
 
 class Control extends React.Component<IStoreProps/* , IState */> {
     public render() {
@@ -23,6 +24,10 @@ class Control extends React.Component<IStoreProps/* , IState */> {
                     </select>
                     <button onClick={actions.draw} className="Control-button">График</button>
                     <button onClick={actions.calculate} className="Control-button">Рассчитать</button>
+                    <span className="Control-panel-checkbox">
+                        <input type="checkbox" checked={store.get('precisePlot')} onChange={writeCheckbox('precisePlot')}/>
+                        <span>Точное построение</span>
+                    </span>
                 </div>
             </div>
         );

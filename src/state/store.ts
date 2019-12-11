@@ -4,14 +4,17 @@ import { connect, createStore, Effects, Store as UnduxStore } from 'undux';
 import withEffects from './effects';
 import { loadState, saveState } from './local-storage';
 
-export interface IState {
-    formula: string;
-    step: number;
-    eps: number;
-    calculationMethod: number;
-    scale: [number, number];
-    offset: [number, number];
-}
+const initialState = {
+    formula: 'sin(x)',
+    step: 0.01,
+    eps: 0.001,
+    calculationMethod: 0,
+    scale: [100, 100],
+    offset: [0.5, 0.5],
+    precisePlot: false,
+};
+
+export type IState = typeof initialState;
 
 export interface IObjects {
     mathField: IMathField;
@@ -28,15 +31,6 @@ export interface IStoreProps {
 }
 
 export type StoreEffects = Effects<IState>;
-
-const initialState: IState = {
-    formula: 'sin(x)',
-    step: 0.01,
-    eps: 0.001,
-    calculationMethod: 0,
-    scale: [100, 100],
-    offset: [0.5, 0.5]
-};
 
 if (!loadState()) {
     saveState(initialState);
