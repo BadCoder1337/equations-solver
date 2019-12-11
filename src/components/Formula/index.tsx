@@ -7,6 +7,10 @@ interface IComponentState {
     editRaw: boolean;
 }
 
+interface IRoots {
+    roots: number[];
+}
+
 const writeFloat = (param: keyof IState) => (mathField: IMathField) => Store.set(param)(parseFloat(mathField.latex()));
 const writeFormula = (mathField: IMathField) => Store.set('formula')(mathField.latex());
 const saveMQ = (mathField: IMathField) => objects.mathField = mathField;
@@ -29,20 +33,14 @@ class Formula extends React.Component<IStoreProps, IComponentState> {
                     mathquillDidMount={saveMQ}
                 />
                 <MathQuillStatic
-                    latex="=0,\ "
-                />
-                <MathQuillStatic
-                    latex="e="
+                    latex="=0,\ e="
                 />
                 <MathQuill
                     latex={store.get('eps').toString()}
                     onChange={writeFloat('eps')}
                 />
                 <MathQuillStatic
-                    latex=",\ "
-                />
-                <MathQuillStatic
-                    latex="\Delta="
+                    latex=",\ \Delta="
                 />
                 <MathQuill
                     latex={store.get('step').toString()}
@@ -52,5 +50,24 @@ class Formula extends React.Component<IStoreProps, IComponentState> {
         );
     }
 }
+
+export const Roots = ({ roots }: IRoots) => (
+    <>{
+    // tslint:disable-next-line:jsx-no-multiline-js
+        roots
+        .map((r, i) => {
+            const digits = Math.abs(Math.log10(Store.get('eps')));
+            const latex = `x_${i + 1}=`
+                + +r.toFixed(digits)
+                + (i < roots.length - 1 ? ',\\ ' : '');
+            return (
+                <MathQuillStatic
+                    key={`r${i}`}
+                    latex={latex}
+                />
+            );
+        })
+    }</>
+);
 
 export default withStore(Formula);
