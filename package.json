@@ -1,6 +1,8 @@
 {
   "name": "equations-solver",
   "version": "0.1.0",
+  "author": "BadCoder1337",
+  "homepage": "https://badcoder1337.github.io/solver",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.23",
