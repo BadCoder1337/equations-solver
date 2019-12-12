@@ -4,7 +4,10 @@ import { Stage as StageType } from 'konva/types/Stage';
 import React from 'react';
 import * as ReactKonva from 'react-konva';
 import Throttle from '../../decorators/throttle';
+import Methods from '../../methods';
 import { actions, IStoreProps, objects, withStore } from '../../state/store';
+import { ArrayPoint } from '../../types';
+import { Roots } from '../Formula';
 import './Graph.css';
 
 const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /Windows Phone/].some(rexp => rexp.test(navigator.userAgent));
@@ -13,7 +16,8 @@ const scaleFactor = 1.1;
 interface IState {
   width: number;
   height: number;
-  points: Array<[number, number]>;
+  points: ArrayPoint[];
+  roots: number[];
 }
 
 class Graph extends React.Component<IStoreProps, IState> {
@@ -25,9 +29,10 @@ class Graph extends React.Component<IStoreProps, IState> {
     this.handleDrag = this.handleDrag.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     actions.draw = this.drawCanvas.bind(this);
+    actions.solve = this.solve.bind(this);
   }
 
-  public state = { width: window.innerWidth * 0.9, height: window.innerHeight * 0.6, points: [] };
+  public state = { width: window.innerWidth * 0.9, height: window.innerHeight * 0.6, points: [], roots: [] };
 
   public componentDidMount() {
     window.addEventListener('resize', this.resizeCanvas);
@@ -41,24 +46,8 @@ class Graph extends React.Component<IStoreProps, IState> {
   @Throttle(isMobile ? 1000 : 500)
   public drawCanvas() {
     console.log('Draw called');
-    if (objects.evaluatex) {
-      console.log('Evaluatex OK');
-      const store = this.props.store;
-      const scale = store.get('scale');
-      const offset = store.get('offset');
-      const step = store.get('step');
-      const points: Array<[number, number]> = [];
-      const corners = [-this.state.width / scale[0], this.state.width / scale[1]];
-      const scaledStep = store.get('precisePlot') ? step : (corners[1] - corners[0]) / this.state.width;
-      for (let x = corners[0]; x < corners[1]; x += scaledStep) {
-        try {
-          points.push([x, objects.evaluatex({ x })]);
-        } catch (error) {
-          console.log('errrr');
-        }
-      }
-      this.setState({ points });
-    }
+
+    this.setState({ points: this.calculatePoints() });
   }
 
   @Throttle(isMobile ? 1000 : 500)
@@ -108,6 +97,47 @@ class Graph extends React.Component<IStoreProps, IState> {
     this.props.store.set('offset')([0.5, 0.5]);
     this.props.store.set('scale')([100, 100]);
     this.drawCanvas();
+  }
+
+  public calculatePoints() {
+    if (objects.evaluatex) {
+      const store = this.props.store;
+      const offset = store.get('offset');
+      const range = this.state.width / store.get('scale')[0];
+      const corners = [-range * offset[0], range * (1 - offset[0])];
+      const scaledStep = store.get('precisePlot') ? store.get('step') : (corners[1] - corners[0]) / this.state.width;
+
+      const points: ArrayPoint[] = [];
+      for (let x = corners[0]; x < corners[1]; x += scaledStep) {
+        try {
+          points.push([x, objects.evaluatex({ x })]);
+        } catch (error) {
+          console.log('errrr');
+        }
+      }
+      return points;
+    } else {
+      return [];
+    }
+  }
+
+  public solve() {
+    const points = this.calculatePoints();
+    const rootZones: ArrayPoint[] = [];
+    points.forEach((p, i) => {
+      const next = points[i + 1];
+      if (next && next[1] * p[1] <= 0) {
+        rootZones.push([p[0], next[0]]);
+      }
+    });
+    console.log(rootZones);
+    const roots = rootZones
+      .map(Methods[this.props.store.get('solvingMethod')])
+      .filter(Number.isFinite);
+
+    console.log(roots);
+
+    this.setState({ points, roots });
   }
 
   public render() {
@@ -169,6 +199,7 @@ class Graph extends React.Component<IStoreProps, IState> {
             />
           </Layer>
         </Stage>
+        <Roots roots={state.roots} />
       </div>
     );
   }
