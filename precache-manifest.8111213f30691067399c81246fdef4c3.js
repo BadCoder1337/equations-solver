@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7c27505493dd6bb9d161d069ef331711",
+    "revision": "2dac799199d6cea2da8b43b51d5be4ad",
     "url": "/equations-solver/index.html"
   },
   {
-    "revision": "f1335e8faa2cfb855e92",
+    "revision": "d599fd242a3b0011da8c",
     "url": "/equations-solver/static/css/main.67917384.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/equations-solver/static/js/2.300da837.chunk.js.LICENSE"
   },
   {
-    "revision": "f1335e8faa2cfb855e92",
-    "url": "/equations-solver/static/js/main.c18e87ef.chunk.js"
+    "revision": "d599fd242a3b0011da8c",
+    "url": "/equations-solver/static/js/main.8eb54930.chunk.js"
   },
   {
     "revision": "766a8d0786a9c76d5eba",
