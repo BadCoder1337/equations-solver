@@ -164,8 +164,8 @@ class Graph extends React.Component<IStoreProps, IState> {
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
           <Layer onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
             <Group>
-              <Rect fill="green" x={-center.x / scale.x} y={-center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
-              <Rect fill="red" width={state.width} height={state.height} />
+              <Rect fill="transparent" x={-center.x / scale.x} y={-center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
+              {/* <Rect fill="red" width={state.width} height={state.height} /> */}
               <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} />
               <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
             </Group>
