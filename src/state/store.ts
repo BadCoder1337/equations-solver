@@ -9,7 +9,7 @@ const initialState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.0001,
-    solvingMethod: SolvingMethod.DICHOTOMY,
+    solvingMethod: SolvingMethod.BISECT,
     scale: [100, 100],
     offset: [0.5, 0.5],
     precisePlot: false,

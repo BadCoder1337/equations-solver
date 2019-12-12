@@ -1,5 +1,5 @@
 export enum SolvingMethod {
-    DICHOTOMY,
+    BISECT,
     SECANT,
     NEWTON,
     ITERATION

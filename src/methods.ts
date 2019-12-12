@@ -2,7 +2,7 @@ import { objects, Store } from './state/store';
 import { ArrayPoint, SolvingMethod } from './types';
 
 export default class Methods {
-    public static [SolvingMethod.DICHOTOMY]([a, b]: ArrayPoint): number {
+    public static [SolvingMethod.BISECT]([a, b]: ArrayPoint): number {
         const c = (a + b) / 2;
         if (b - a > Store.get('eps')) {
             const B = objects.evaluatex!({ x: b });
@@ -10,8 +10,8 @@ export default class Methods {
             return C === 0
                 ? c
                 : C * B < 0
-                    ? Methods[SolvingMethod.DICHOTOMY]([c, b])
-                    : Methods[SolvingMethod.DICHOTOMY]([a, c]);
+                    ? Methods[SolvingMethod.BISECT]([c, b])
+                    : Methods[SolvingMethod.BISECT]([a, c]);
         } else {
             return c;
         }
