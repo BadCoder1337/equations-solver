@@ -6,18 +6,18 @@
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.23",
-    "@types/node": "12.12.7",
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.3",
+    "@types/node": "12.12.17",
+    "@types/react": "16.9.16",
+    "@types/react-dom": "16.9.4",
     "evaluatex": "https://github.com/BadCoder1337/evaluatex#5103ded",
-    "konva": "^4.0.16",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "konva": "^4.0.18",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-konva": "^16.10.1-0",
     "react-mathquill": "https://github.com/BadCoder1337/react-mathquill#0f829e3",
-    "react-scripts": "3.2.0",
+    "react-scripts": "3.3.0",
     "reflect-metadata": "0.1.13",
-    "typescript": "3.7.2",
+    "typescript": "3.7.3",
     "undux": "https://github.com/BadCoder1337/undux#7525d8b"
   },
   "scripts": {
@@ -25,7 +25,9 @@
     "start:headless": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
+    "gh-pages": "^2.1.1",
     "tslint": "^5.20.0",
     "tslint-react": "^4.1.0"
   }
