@@ -1,14 +1,15 @@
 import evaluatex, { EvalFunc } from 'evaluatex';
 import { IMathField } from 'react-mathquill';
 import { connect, createStore, Effects, Store as UnduxStore } from 'undux';
+import { SolvingMethod } from '../types';
 import withEffects from './effects';
 import { loadState, saveState } from './local-storage';
 
 const initialState = {
     formula: 'sin(x)',
     step: 0.01,
-    eps: 0.001,
-    solvingMethod: 0,
+    eps: 0.0001,
+    solvingMethod: SolvingMethod.DICHOTOMY,
     scale: [100, 100],
     offset: [0.5, 0.5],
     precisePlot: false,
