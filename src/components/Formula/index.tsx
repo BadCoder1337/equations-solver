@@ -57,7 +57,7 @@ export const Roots = ({ roots }: IRoots) => (
         roots
         .map((r, i) => {
             const digits = Math.abs(Math.log10(Store.get('eps')));
-            const latex = `x_${i + 1}=`
+            const latex = `x_{${i + 1}}=`
                 + +r.toFixed(digits)
                 + (i < roots.length - 1 ? ',\\ ' : '');
             return (

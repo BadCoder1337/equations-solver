@@ -1,7 +1,13 @@
-.Graph-canvas {
-  background-color: brown;
+.Graph {
+  width: 90%;
 }
 
 .Graph-stage {
+  margin: 0px auto;
   background-color: cadetblue;
+}
+
+.Graph-roots {
+  max-width: 90%;
+  margin: auto;
 }

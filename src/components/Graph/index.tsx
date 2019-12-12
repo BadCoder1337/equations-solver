@@ -50,7 +50,6 @@ class Graph extends React.Component<IStoreProps, IState> {
     this.setState({ points: this.calculatePoints() });
   }
 
-  @Throttle(isMobile ? 1000 : 500)
   public resizeCanvas() {
     this.setState({ width: window.innerWidth * 0.9, height: window.innerHeight * 0.6 });
     this.drawCanvas();
@@ -160,7 +159,7 @@ class Graph extends React.Component<IStoreProps, IState> {
     const { Stage, Layer, Group, Rect, Line, Text } = ReactKonva;
 
     return (
-      <div>
+      <div className="Graph">
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
           <Layer onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
             <Group>
@@ -199,7 +198,9 @@ class Graph extends React.Component<IStoreProps, IState> {
             />
           </Layer>
         </Stage>
-        <Roots roots={state.roots} />
+        <div className="Graph-roots">
+          <Roots roots={state.roots} />
+        </div>
       </div>
     );
   }

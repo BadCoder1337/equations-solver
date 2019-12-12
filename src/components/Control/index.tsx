@@ -17,9 +17,9 @@ class Control extends React.Component<IStoreProps/* , IState */> {
                 <div className="Control-panel">
                     <select className="Control-select" value={store.get('solvingMethod')} onChange={writeCalculationMethod}>
                         <option value={SolvingMethod.DICHOTOMY}>Метод половинного деления</option>
-                        <option value={SolvingMethod.SECANT}>Метод хорд</option>
-                        <option value={SolvingMethod.NEWTON}>Метод касательных</option>
-                        <option value={SolvingMethod.ITERATION}>Метод простых итераций</option>
+                        <option disabled value={SolvingMethod.SECANT}>Метод хорд (скоро...)</option>
+                        <option disabled value={SolvingMethod.NEWTON}>Метод касательных (скоро...)</option>
+                        <option disabled value={SolvingMethod.ITERATION}>Метод простых итераций (скоро...)</option>
                     </select>
                     <button onClick={actions.draw} className="Control-button">График</button>
                     <button onClick={actions.solve} className="Control-button">Рассчитать</button>
