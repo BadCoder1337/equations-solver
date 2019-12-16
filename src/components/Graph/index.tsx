@@ -5,8 +5,8 @@ import React from 'react';
 import * as ReactKonva from 'react-konva';
 import Throttle from '../../decorators/throttle';
 import Methods from '../../methods';
-import { actions, IStoreProps, objects, withStore } from '../../state/store';
-import { ArrayPoint } from '../../types';
+import { actions, objects, withStore } from '../../state/store';
+import { ArrayPoint, IStoreProps } from '../../types';
 import { Roots } from '../Formula';
 import './Graph.css';
 

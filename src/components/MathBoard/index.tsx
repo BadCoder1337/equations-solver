@@ -1,6 +1,7 @@
 import React from 'react';
 import { MathQuillStatic } from 'react-mathquill';
-import { IStoreProps, objects, withStore } from '../../state/store';
+import { objects, withStore } from '../../state/store';
+import { IStoreProps } from '../../types';
 import './MathBoard.css';
 
 // interface IState {

@@ -1,6 +1,7 @@
 import Evaluate from 'evaluatex';
+import { StoreEffects } from '../types';
 import { saveState } from './local-storage';
-import { objects, StoreEffects } from './store';
+import { actions, objects } from './store';
 
 // @ts-ignore
 window.evaluatex = Evaluate;
@@ -23,6 +24,10 @@ const withEffects: StoreEffects = store => {
         console.log(error.toString().split('\n')[0]);
       }
     });
+
+  store
+    .on('eps')
+    .subscribe(() => actions.solve!());
 
   store
     .onAll()

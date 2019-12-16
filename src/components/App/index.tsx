@@ -1,5 +1,6 @@
 import React from 'react';
-import { IStoreProps, withStore } from '../../state/store';
+import { withStore } from '../../state/store';
+import { IStoreProps } from '../../types';
 import Control from '../Control';
 import Formula from '../Formula';
 import Graph from '../Graph';
@@ -21,8 +22,5 @@ class App extends React.Component<IStoreProps> {
     );
   }
 }
-/* <div onClick={() => store.set('step')(store.get('step') + 0.1)}>
-  Edit <code>src/App.tsx</code> and save to {store.get('step')}.
-</div> */
 
 export default withStore(App);

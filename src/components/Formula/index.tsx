@@ -1,6 +1,7 @@
 import React from 'react';
 import { IMathField, MathQuill, MathQuillStatic } from 'react-mathquill';
-import { IState, IStoreProps, objects, Store, withStore } from '../../state/store';
+import { objects, Store, withStore } from '../../state/store';
+import { IState, IStoreProps } from '../../types';
 import './Formula.css';
 
 interface IComponentState {
@@ -51,12 +52,12 @@ class Formula extends React.Component<IStoreProps, IComponentState> {
     }
 }
 
-export const Roots = ({ roots }: IRoots) => (
+export const Roots: React.FC<IRoots> = ({ roots }) => (
     <>{
     // tslint:disable-next-line:jsx-no-multiline-js
         roots
         .map((r, i) => {
-            const digits = Math.abs(Math.log10(Store.get('eps')));
+            const digits = Math.abs(Math.log10(Store.get('eps'))) || 0.1;
             const latex = `x_{${i + 1}}=`
                 + +r.toFixed(digits)
                 + (i < roots.length - 1 ? ',\\ ' : '');

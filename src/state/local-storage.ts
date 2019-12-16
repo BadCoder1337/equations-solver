@@ -1,4 +1,4 @@
-import { IState } from './store';
+import { IState } from '../types';
 
 export const loadState: () => IState = () => {
   try {
