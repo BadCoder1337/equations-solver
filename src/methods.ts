@@ -2,21 +2,22 @@ import { objects, Store } from './state/store';
 import { ArrayPoint, SolvingMethod } from './types';
 
 export default class Methods {
-    public static [SolvingMethod.BISECT]([xa, xb]: ArrayPoint): number {
+    public static [SolvingMethod.BISECT]([a, b]: ArrayPoint): number {
         const e = Store.get('eps');
+        const F = (xx: number) => objects.evaluatex!({ x: xx });
         let x;
         do {
-            const Fa = objects.evaluatex!({ x: xa });
-            const Fb = objects.evaluatex!({ x: xb });
-            if (Fa === 0) { return xa; }
-            if (Fb === 0) { return xb; }
-            x = (xa + xb) / 2;
-            const Fx = objects.evaluatex!({ x });
+            const Fa = F(a);
+            const Fb = F(b);
+            if (Fa === 0) { return a; }
+            if (Fb === 0) { return b; }
+            x = (a + b) / 2;
+            const Fx = F(x);
             Math.sign(Fa)
             !== Math.sign(Fx)
-                ? xb = x
-                : xa = x;
-        } while (xb - xa > e);
+                ? b = x
+                : a = x;
+        } while (b - a > e);
 
         return x;
     }
@@ -34,8 +35,24 @@ export default class Methods {
     }
 
     public static [SolvingMethod.SECANT]([a, b]: ArrayPoint): number {
-        console.log('secant');
-        const c = (a + b) / 2;
-        return c;
+        const e = Store.get('eps');
+        const F = (xx: number) => objects.evaluatex!({ x: xx });
+        let Fa = F(a);
+        let Fb = F(b);
+        let x = b;
+        const S = Math.sign(Fa);
+        while (b - a > e) {
+            x = a - (b - a) / (Fb - Fa) * Fa;
+            const R = F(x);
+            if (Math.abs(R) < e) { break; }
+            if (Math.sign(R) === S) {
+                a = x;
+                Fa = R;
+            } else {
+                b = x;
+                Fb = R;
+            }
+        }
+        return x;
     }
 }
