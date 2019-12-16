@@ -161,7 +161,7 @@ class Graph extends React.Component<IStoreProps, IState> {
     return (
       <div className="Graph">
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
+          <Layer onDblTap={this.resetTransform} onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
             <Group>
               <Rect fill="transparent" x={-center.x / scale.x} y={-center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
               {/* <Rect fill="red" width={state.width} height={state.height} /> */}
