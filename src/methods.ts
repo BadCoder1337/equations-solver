@@ -2,19 +2,23 @@ import { objects, Store } from './state/store';
 import { ArrayPoint, SolvingMethod } from './types';
 
 export default class Methods {
-    public static [SolvingMethod.BISECT]([a, b]: ArrayPoint): number {
-        const c = (a + b) / 2;
-        if (b - a > Store.get('eps')) {
-            const B = objects.evaluatex!({ x: b });
-            const C = objects.evaluatex!({ x: c });
-            return C === 0
-                ? c
-                : C * B < 0
-                    ? Methods[SolvingMethod.BISECT]([c, b])
-                    : Methods[SolvingMethod.BISECT]([a, c]);
-        } else {
-            return c;
-        }
+    public static [SolvingMethod.BISECT]([xa, xb]: ArrayPoint): number {
+        const e = Store.get('eps');
+        let x;
+        do {
+            const Fa = objects.evaluatex!({ x: xa });
+            const Fb = objects.evaluatex!({ x: xb });
+            if (Fa === 0) { return xa; }
+            if (Fb === 0) { return xb; }
+            x = (xa + xb) / 2;
+            const Fx = objects.evaluatex!({ x });
+            Math.sign(Fa)
+            !== Math.sign(Fx)
+                ? xb = x
+                : xa = x;
+        } while (xb - xa > e);
+
+        return x;
     }
 
     public static [SolvingMethod.ITERATION]([a, b]: ArrayPoint): number {
