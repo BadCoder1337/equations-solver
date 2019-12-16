@@ -24,12 +24,14 @@ export default class Methods {
 
     public static [SolvingMethod.ITERATION]([a, b]: ArrayPoint): number {
         console.log('iterations');
+        console.log(Methods.derivative(a), Methods.derivative(b));
         const c = (a + b) / 2;
         return c;
     }
 
     public static [SolvingMethod.SECANT]([a, b]: ArrayPoint): number {
-        console.log('newton');
+        console.log('secant');
+        console.log(Methods.derivative(a), Methods.derivative(b));
         const c = (a + b) / 2;
         return c;
     }
@@ -54,5 +56,11 @@ export default class Methods {
             }
         }
         return x;
+    }
+
+    public static derivative(x: number) {
+        const e = Store.get('eps');
+        const F = (xx: number) => objects.evaluatex!({ x: xx });
+        return (F(x + e) - F(x)) / e;
     }
 }
