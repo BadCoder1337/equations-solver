@@ -57,7 +57,7 @@ export const Roots: React.FC<IRoots> = ({ roots }) => (
     // tslint:disable-next-line:jsx-no-multiline-js
         roots
         .map((r, i) => {
-            const digits = Math.abs(Math.log10(Store.get('eps'))) || 0.1;
+            const digits = Math.abs(Math.log10(Store.get('eps'))) || 1;
             const latex = `x_{${i + 1}}=`
                 + +r.toFixed(digits)
                 + (i < roots.length - 1 ? ',\\ ' : '');
