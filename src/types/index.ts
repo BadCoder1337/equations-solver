@@ -5,8 +5,8 @@ import { initialState } from '../state/store';
 
 export enum SolvingMethod {
     BISECT,
+    CHORD,
     SECANT,
-    NEWTON,
     ITERATION
 }
 

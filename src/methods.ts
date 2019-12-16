@@ -28,13 +28,13 @@ export default class Methods {
         return c;
     }
 
-    public static [SolvingMethod.NEWTON]([a, b]: ArrayPoint): number {
+    public static [SolvingMethod.SECANT]([a, b]: ArrayPoint): number {
         console.log('newton');
         const c = (a + b) / 2;
         return c;
     }
 
-    public static [SolvingMethod.SECANT]([a, b]: ArrayPoint): number {
+    public static [SolvingMethod.CHORD]([a, b]: ArrayPoint): number {
         const e = Store.get('eps');
         const F = (xx: number) => objects.evaluatex!({ x: xx });
         let Fa = F(a);

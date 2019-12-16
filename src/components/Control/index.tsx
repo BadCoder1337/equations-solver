@@ -11,8 +11,8 @@ const Control: React.FC<IStoreProps> = ({ store }) => (
         <div className="Control-panel">
             <select className="Control-select" value={store.get('solvingMethod')} onChange={writeCalculationMethod}>
                 <option value={SolvingMethod.BISECT}>Метод бисекции</option>
-                <option disabled value={SolvingMethod.SECANT}>Метод хорд (скоро...)</option>
-                <option disabled value={SolvingMethod.NEWTON}>Метод касательных (скоро...)</option>
+                <option value={SolvingMethod.CHORD}>Метод хорд</option>
+                <option disabled value={SolvingMethod.SECANT}>Метод касательных (скоро...)</option>
                 <option disabled value={SolvingMethod.ITERATION}>Метод простых итераций (скоро...)</option>
             </select>
             <button onClick={actions.draw} className="Control-button">График</button>
