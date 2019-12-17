@@ -4,7 +4,7 @@ import { IActions, IObjects, SolvingMethod } from '../types';
 import withEffects from './effects';
 import { loadState, saveState } from './local-storage';
 
-export const initialState = {
+export const defaultState = {
     formula: 'sin(x)',
     step: 0.01,
     eps: 0.0001,
@@ -12,7 +12,14 @@ export const initialState = {
     scale: [100, 100],
     offset: [0.5, 0.5],
     precisePlot: false,
+    debug: false
 };
+
+if (!loadState()) {
+    saveState(defaultState);
+}
+
+const initialState = {...defaultState, ...loadState()};
 
 export const actions: Partial<IActions> = {};
 
@@ -25,12 +32,6 @@ try {
 export const objects: Partial<IObjects>  = {
     evaluatex: initialEvaluatex,
 };
-
-if (!loadState()) {
-    saveState(initialState);
-}
-
-Object.assign(initialState, loadState());
 
 export const Store = createStore(initialState);
 withEffects(Store);
