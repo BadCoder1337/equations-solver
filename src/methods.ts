@@ -29,8 +29,8 @@ export default class Methods {
         return c;
     }
 
-    public static [SolvingMethod.SECANT]([a, b]: ArrayPoint): number {
-        console.log('secant');
+    public static [SolvingMethod.TANGENT]([a, b]: ArrayPoint): number {
+        console.log('tangent');
         console.log(Methods.derivative(a), Methods.derivative(b));
         const c = (a + b) / 2;
         return c;

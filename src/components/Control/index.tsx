@@ -12,7 +12,7 @@ const Control: React.FC<IStoreProps> = ({ store }) => (
             <select className="Control-select" value={store.get('solvingMethod')} onChange={writeCalculationMethod}>
                 <option value={SolvingMethod.BISECT}>Метод бисекции</option>
                 <option value={SolvingMethod.CHORD}>Метод хорд</option>
-                <option disabled value={SolvingMethod.SECANT}>Метод касательных (скоро...)</option>
+                <option disabled value={SolvingMethod.TANGENT}>Метод касательных (скоро...)</option>
                 <option disabled value={SolvingMethod.ITERATION}>Метод простых итераций (скоро...)</option>
             </select>
             <button onClick={actions.draw} className="Control-button">График</button>

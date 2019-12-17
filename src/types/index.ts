@@ -6,7 +6,7 @@ import { initialState } from '../state/store';
 export enum SolvingMethod {
     BISECT,
     CHORD,
-    SECANT,
+    TANGENT,
     ITERATION
 }
 
