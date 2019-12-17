@@ -12,12 +12,17 @@ class App extends React.Component<IStoreProps> {
     // const { store } = this.props;
     return (
       <div className="App">
-        <header className="App-header">
-          <Graph />
-          <Formula />
-          <Control />
-          <MathBoard />
-        </header>
+        <Graph />
+        <Formula />
+        <Control />
+        <MathBoard />
+        <div className="App-footer">
+          Репозиторий:&nbsp;<a href="https://github.com/BadCoder1337/equations-solver">equations-solver</a>
+          &#160;
+          Автор:&nbsp;<a href="https://github.com/BadCoder1337">BadCoder1337</a>
+          &#160;
+          Сделано&nbsp;с&nbsp;помощью&nbsp;<a href="https://typescriptlang.org">TypeScript</a>&nbsp;&&nbsp;<a href="https://reactjs.org/">React</a>
+        </div>
       </div>
     );
   }
