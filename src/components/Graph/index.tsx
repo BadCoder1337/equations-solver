@@ -150,17 +150,12 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     const state = this.state;
     const store = this.props.store;
 
-    const center = {
-      x: state.width * store.get('offset')[0],
-      y: state.height * store.get('offset')[1],
-    };
     const scale = {
       x: store.get('scale')[0],
       y: store.get('scale')[1]
     };
     const strokeWidth = 2 / Math.sqrt(scale.x * scale.y);
 
-    const withScale = { scale };
     const withStrokeWidth = { strokeWidth };
 
     const { Stage, Layer, Group, Rect, Line, Text } = ReactKonva;
@@ -168,9 +163,9 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     return (
       <div className="Graph">
         <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer onDblTap={this.resetTransform} onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...withScale} id="graph" {...center}>
+          <Layer onDblTap={this.resetTransform} onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...{scale}} id="graph" {...this.center}>
             <Group>
-              <Rect fill="transparent" x={-center.x / scale.x} y={-center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
+              <Rect fill="transparent" x={-this.center.x / scale.x} y={-this.center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
               {/* <Rect fill="red" width={state.width} height={state.height} /> */}
               <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} />
               <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
@@ -192,7 +187,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
                 + ' O:'
                 + store.get('offset').map(v => v.toFixed(2))
                 + ' C:'
-                + Object.values(center).map(v => v.toFixed(2))
+                + Object.values(this.center).map(v => v.toFixed(2))
                 + ' B:'
                 + [-state.width / store.get('scale')[0], state.width / store.get('scale')[1]].map(v => v.toFixed(2))
                 + ' P:'
@@ -210,6 +205,16 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
       </div>
     );
   }
+
+  public get center() {
+    const state = this.state;
+    const store = this.props.store;
+    return {
+      x: state.width * store.get('offset')[0],
+      y: state.height * store.get('offset')[1],
+    };
+  }
+
 }
 
 export default withStore(Graph);
