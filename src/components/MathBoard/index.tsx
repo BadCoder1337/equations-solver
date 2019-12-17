@@ -10,7 +10,7 @@ import './MathBoard.css';
 
 const operators = ['\\pi', '☐^2', 'x^{☐}', '\\sqrt{☐}', '\\sqrt[☐]{☐}', '\\frac{☐}{☐}', '\\log_{☐}'];
 
-const writeLaTex = (op: string) => () => objects.mathField && objects.mathField.write(op.replace(/☐/g, ''));
+const writeLaTex = (op: string) => () => objects.mathField?.write(op.replace(/☐/g, ''));
 
 const Button = (op: string, i: number) => (
     <div

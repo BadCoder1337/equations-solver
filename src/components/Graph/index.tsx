@@ -58,7 +58,7 @@ class Graph extends React.Component<IStoreProps, IState> {
   public handleScroll(event: KonvaEventObject<WheelEvent>) {
     event.evt.preventDefault();
     const layer = event.target.getLayer() as LayerType;
-    if (layer && layer.attrs.id === 'graph') {
+    if (layer?.attrs.id === 'graph') {
       const keys = ['Control', 'Alt', 'Shift'];
       const modifiers = keys.map(key => event.evt.getModifierState(key));
       const stage = layer.getStage() as StageType;
