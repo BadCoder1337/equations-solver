@@ -3,10 +3,12 @@ import { KonvaEventObject } from 'konva/types/Node';
 import { Stage as StageType } from 'konva/types/Stage';
 import React from 'react';
 import * as ReactKonva from 'react-konva';
-import Throttle from '../../decorators/throttle';
+import { MathQuillStatic } from 'react-mathquill';
 import Methods from '../../methods';
 import { actions, objects, withStore } from '../../state/store';
 import { ArrayPoint, IStoreProps } from '../../types';
+import Portal from '../../utils/portal';
+import Throttle from '../../utils/throttle';
 import { Roots } from '../Formula';
 import './Graph.css';
 
@@ -38,6 +40,8 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     actions.draw = this.drawCanvas.bind(this);
     actions.solve = this.solve.bind(this);
   }
+
+  public ref: ReactKonva.Stage | null = null;
 
   public state = defaultState;
 
@@ -144,6 +148,23 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     this.setState({ points, roots });
   }
 
+  public RootLabel: React.FC<IRootLabel> = ({ i, x, y }) => {
+    const stageElement = this.ref!.getStage().container();
+    const location = {
+      left: this.center.x + stageElement.offsetLeft + this.state.width * x / this.range.x,
+      top: this.center.y + stageElement.offsetTop + this.state.height * y / this.range.y,
+    };
+    return (
+      <MathQuillStatic
+        style={{
+          position: 'absolute',
+          ...location
+        }}
+        latex={`x_{${i + 1}}`}
+      />
+    );
+  }
+
   public render() {
     const state = this.state;
     const store = this.store;
@@ -160,13 +181,28 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
 
     return (
       <div className="Graph">
-        <Stage onWheel={this.handleScroll} className="Graph-stage" {...state}>
+        <Stage ref={r => this.ref = r} onWheel={this.handleScroll} className="Graph-stage" {...state}>
           <Layer onDblTap={this.resetTransform} onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...{scale}} id="graph" {...this.center}>
             <Group>
               <Rect fill="transparent" x={-this.center.x / scale.x} y={-this.center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
-              {/* <Rect fill="red" width={state.width} height={state.height} /> */}
-              <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} />
-              <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} />
+
+              <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} /* OX */ />
+
+              <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} /* OY */ />
+
+              <Portal>
+                {
+                  state.roots
+                  .map((root, i) => {
+                    const props = {
+                      x: root,
+                      y: 0,
+                      i
+                    };
+                    return <this.RootLabel key={i} {...props} />;
+                  })
+                }
+              </Portal>
             </Group>
             <Group>
               <Line stroke="black" {...withStrokeWidth} points={state.points.flat()} scaleY={-1} />
