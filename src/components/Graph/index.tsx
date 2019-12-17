@@ -225,27 +225,32 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
             <Text
               onClick={this.reset}
               text={
-                'react-konva H:'
+                'react-konva'
+                + '\nH:'
                 + state.height.toFixed(2)
                 + ' W:'
                 + state.width.toFixed(2)
-                + ' S:'
+                + '\nS:'
                 + this.store.get('scale').map(v => v.toFixed(2))
-                + ' O:'
+                + '\nO:'
                 + this.store.get('offset').map(v => v.toFixed(2))
-                + ' C:'
+                + '\nC:'
                 + Object.values(this.center).map(v => v.toFixed(2))
-                + ' Bx:'
+                + '\nBx:'
                 + this.corners.x.map(v => v.toFixed(2))
                 + ' By:'
                 + this.corners.y.map(v => v.toFixed(2))
-                + ' Rx:'
+                + '\nRx:'
                 + this.range.x.toFixed(2)
                 + ' Ry:'
                 + this.range.y.toFixed(2)
-                + ' P:'
+                + '\nSx:'
+                + this.strokeWidth.x.toFixed(2)
+                + ' Sy:'
+                + this.strokeWidth.y.toFixed(2)
+                + '\nP:'
                 + state.points.length
-                + ' Click here to reset.'
+                + '\nClick here to reset.'
               }
               fontSize={12}
               fontFamily={`"Lucida Console", Monaco, monospace`}
@@ -293,6 +298,13 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     return {
       x: this.store.get('scale')[0],
       y: this.store.get('scale')[1]
+    };
+  }
+
+  public get strokeWidth() {
+    return {
+      x: 2 / this.scale.x,
+      y: 2 / this.scale.y
     };
   }
 
