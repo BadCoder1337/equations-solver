@@ -62,7 +62,7 @@ export const Roots: React.FC<IRoots> = ({ roots }) => (
                 + (i < roots.length - 1 ? ',\\ ' : '');
             return (
                 <MathQuillStatic
-                    key={`r${i}`}
+                    key={r.toFixed(digits)}
                     latex={latex}
                 />
             );
