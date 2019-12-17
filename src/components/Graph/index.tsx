@@ -174,10 +174,30 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
 
     return (
       <div className="Graph">
-        <Stage ref={r => this.ref = r} onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer onDblTap={this.reset} onDblClick={this.reset} draggable onDragStart={this.handleDrag} onDragEnd={this.handleDrag} scale={this.scale} id="graph" {...this.center}>
+        <Stage
+          ref={r => this.ref = r}
+          onWheel={this.handleScroll}
+          className="Graph-stage"
+          {...state}
+        >
+          <Layer
+            onDblTap={this.reset}
+            onDblClick={this.reset}
+            draggable
+            onDragStart={this.handleDrag}
+            onDragEnd={this.handleDrag}
+            scale={this.scale}
+            id="graph"
+            {...this.center}
+          >
             <Group>
-              <Rect fill="transparent" x={-this.center.x / this.scale.x} y={-this.center.y / this.scale.y} width={state.width / this.scale.x} height={state.height / this.scale.y} />
+              <Rect
+                fill="transparent"
+                x={-this.center.x / this.scale.x}
+                y={-this.center.y / this.scale.y}
+                width={state.width / this.scale.x}
+                height={state.height / this.scale.y}
+              />
 
               {this.Lines.x()}
               {this.Numbers.x()}

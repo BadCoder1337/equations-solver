@@ -15,7 +15,7 @@ export type ArrayPoint = [number, number];
 
 export type IState = typeof initialState;
 
-export type ItemComponent = (i: number, axis: keyof Vector2d, scale: Vector2d) => JSX.Element;
+export type ItemComponent = (i: number, axis: keyof Vector2d, scale: Vector2d, stroke: Vector2d) => JSX.Element;
 
 export interface IObjects {
     mathField: IMathField;
