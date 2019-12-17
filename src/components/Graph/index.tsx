@@ -6,20 +6,20 @@ import * as ReactKonva from 'react-konva';
 import { MathQuillStatic } from 'react-mathquill';
 import Methods from '../../methods';
 import { actions, objects, withStore } from '../../state/store';
-import { ArrayPoint, IStoreProps } from '../../types';
+import { ArrayPoint, IStoreProps, ItemComponent } from '../../types';
 import Portal from '../../utils/portal';
 import Throttle from '../../utils/throttle';
 import { Roots } from '../Formula';
 import './Graph.css';
 
 const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /Windows Phone/].some(rexp => rexp.test(navigator.userAgent));
-const scaleFactor = 1.1;
+const scaleFactor = 1.05;
 
 const defaultState = {
   width: window.innerWidth * 0.9,
   height: window.innerHeight * 0.6,
   points: [] as ArrayPoint[],
-  roots: [] as number[],
+  roots: null as number[] | null,
   dragging: false
  };
 
@@ -34,7 +34,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     super(props);
 
     this.resizeCanvas = this.resizeCanvas.bind(this);
-    this.resetTransform = this.resetTransform.bind(this);
+    this.reset = this.reset.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     actions.draw = this.drawCanvas.bind(this);
@@ -93,19 +93,33 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
       this.props.store.set('scale')([newScale.x, newScale.y]);
       this.props.store.set('offset')([newPos.x / this.state.width, newPos.y / this.state.height]);
     }
-    // console.log();
     this.drawCanvas();
+    if (this.state.roots !== null) {
+      this.solve();
+    }
   }
 
-  public handleDrag(event: KonvaEventObject<DragEvent>) {
-    const absPos = event.target.getAbsolutePosition();
-    this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height]);
-    this.drawCanvas();
+  public handleDrag(event: KonvaEventObject<DragEvent> & { type: string }) {
+    switch (event.type) {
+      case 'dragend':
+        const absPos = event.target.getAbsolutePosition();
+        this.props.store.set('offset')([absPos.x / this.state.width, absPos.y / this.state.height]);
+        this.setState({ dragging: false });
+        this.drawCanvas();
+        if (this.state.roots !== null) {
+          this.solve();
+        }
+        break;
+      case 'dragstart':
+        this.setState({ dragging: true });
+        break;
+    }
   }
 
-  public resetTransform() {
+  public reset() {
     this.props.store.set('offset')([0.5, 0.5]);
     this.props.store.set('scale')([100, 100]);
+    this.setState({ roots: null });
     this.drawCanvas();
   }
 
@@ -129,6 +143,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     }
   }
 
+  @Throttle(isMobile ? 1000 : 200)
   public solve() {
     const points = this.calculatePoints();
     const rootZones: ArrayPoint[] = [];
@@ -148,32 +163,10 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     this.setState({ points, roots });
   }
 
-  public RootLabel: React.FC<IRootLabel> = ({ i, x, y }) => {
-    const stageElement = this.ref!.getStage().container();
-    const location = {
-      left: this.center.x + stageElement.offsetLeft + this.state.width * x / this.range.x,
-      top: this.center.y + stageElement.offsetTop + this.state.height * y / this.range.y,
-    };
-    return (
-      <MathQuillStatic
-        style={{
-          position: 'absolute',
-          ...location
-        }}
-        latex={`x_{${i + 1}}`}
-      />
-    );
-  }
-
   public render() {
     const state = this.state;
-    const store = this.store;
 
-    const scale = {
-      x: store.get('scale')[0],
-      y: store.get('scale')[1]
-    };
-    const strokeWidth = 2 / Math.sqrt(scale.x * scale.y);
+    const strokeWidth = 2 / Math.sqrt(this.scale.x * this.scale.y);
 
     const withStrokeWidth = { strokeWidth };
 
@@ -182,26 +175,26 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     return (
       <div className="Graph">
         <Stage ref={r => this.ref = r} onWheel={this.handleScroll} className="Graph-stage" {...state}>
-          <Layer onDblTap={this.resetTransform} onDblClick={this.resetTransform} draggable onDragEnd={this.handleDrag} {...{scale}} id="graph" {...this.center}>
+          <Layer onDblTap={this.reset} onDblClick={this.reset} draggable onDragStart={this.handleDrag} onDragEnd={this.handleDrag} scale={this.scale} id="graph" {...this.center}>
             <Group>
-              <Rect fill="transparent" x={-this.center.x / scale.x} y={-this.center.y / scale.y} width={state.width / scale.x} height={state.height / scale.y} />
+              <Rect fill="transparent" x={-this.center.x / this.scale.x} y={-this.center.y / this.scale.y} width={state.width / this.scale.x} height={state.height / this.scale.y} />
 
-              <Line stroke="black" {...withStrokeWidth} points={[-9000, 0, 9000, 0]} /* OX */ />
+              {this.Lines.x()}
+              {this.Numbers.x()}
 
-              <Line stroke="black" {...withStrokeWidth} points={[0, -9000, 0, 9000]} /* OY */ />
+              {this.Lines.y()}
+              {this.Numbers.y()}
 
               <Portal>
-                {
-                  state.roots
+                {(state.roots && !state.dragging ? state.roots : [])
                   .map((root, i) => {
                     const props = {
-                      x: root,
-                      y: 0,
+                      x: root - 0.1,
+                      y: -0.5,
                       i
                     };
-                    return <this.RootLabel key={i} {...props} />;
-                  })
-                }
+                    return <this.MQLabel key={root} {...props} />;
+                })}
               </Portal>
             </Group>
             <Group>
@@ -210,22 +203,26 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
           </Layer>
           <Layer id="text">
             <Text
-              onClick={this.resetTransform}
+              onClick={this.reset}
               text={
                 'react-konva H:'
                 + state.height.toFixed(2)
                 + ' W:'
                 + state.width.toFixed(2)
                 + ' S:'
-                + store.get('scale').map(v => v.toFixed(2))
+                + this.store.get('scale').map(v => v.toFixed(2))
                 + ' O:'
-                + store.get('offset').map(v => v.toFixed(2))
+                + this.store.get('offset').map(v => v.toFixed(2))
                 + ' C:'
                 + Object.values(this.center).map(v => v.toFixed(2))
                 + ' Bx:'
                 + this.corners.x.map(v => v.toFixed(2))
                 + ' By:'
                 + this.corners.y.map(v => v.toFixed(2))
+                + ' Rx:'
+                + this.range.x.toFixed(2)
+                + ' Ry:'
+                + this.range.y.toFixed(2)
                 + ' P:'
                 + state.points.length
                 + ' Click here to reset.'
@@ -236,11 +233,13 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
           </Layer>
         </Stage>
         <div className="Graph-roots">
-          <Roots roots={state.roots} />
+          <Roots roots={state.roots || []} />
         </div>
       </div>
     );
   }
+
+  // getters
 
   public get store() {
     return this.props.store;
@@ -270,6 +269,73 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     };
   }
 
+  public get scale() {
+    return {
+      x: this.store.get('scale')[0],
+      y: this.store.get('scale')[1]
+    };
+  }
+
+  // Sub-components
+
+  public MQLabel: React.FC<IRootLabel> = ({ i, x, y }) => {
+    const stageElement = this.ref!.getStage().container();
+    const location = {
+      left: this.center.x + stageElement.offsetLeft + this.state.width * x / this.range.x,
+      top: this.center.y + stageElement.offsetTop + this.state.height * y / this.range.y,
+    };
+    return (
+      <MathQuillStatic
+        style={{
+          position: 'absolute',
+          backgroundColor: 'white',
+          ...location
+        }}
+        latex={`x_{${i + 1}}`}
+      />
+    );
+  }
+
+  public componentArrayFactory = (component: ItemComponent, axis: 'x' | 'y') => () =>
+    new Array(
+      Math.round(this.range[axis]) + 1
+    )
+    .fill(null)
+    .map((_, i) =>
+      Math.floor(this.corners[axis][0]) + i)
+    .map(i => component(i, axis, this.scale))
+
+  public Lines = {
+    x: this.componentArrayFactory(Graph.ItemLine, 'x'),
+    y: this.componentArrayFactory(Graph.ItemLine, 'y'),
+  };
+
+  public Numbers = {
+    x: this.componentArrayFactory(Graph.ItemNumber, 'x'),
+    y: this.componentArrayFactory(Graph.ItemNumber, 'y'),
+  };
+
+  public static ItemLine: ItemComponent = (i, axis, scale) => (
+    <ReactKonva.Line
+      key={i}
+      stroke="black"
+      strokeWidth={2 / Math.sqrt(scale.x * scale.y) / (i ? 3 : 1)}
+      points={axis === 'x' ? [i, -9000, i, 9000] : [-9000, i, 9000, i]}
+    />
+  )
+
+  public static ItemNumber: ItemComponent = (i, axis, scale) => (
+    <ReactKonva.Text
+      key={i}
+      // strokeWidth={2 / Math.sqrt(scale.x * scale.y) / 2}
+      x={(axis === 'x' ? i : 0) + 0.1}
+      y={(axis === 'x' ? 0 : i) + 0.1}
+      scaleX={0.3}
+      scaleY={0.3}
+      fontSize={1}
+      text={+i.toFixed(1) + ''}
+    />
+  )
 }
 
 export default withStore(Graph);
