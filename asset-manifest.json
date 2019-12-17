@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/equations-solver/static/css/main.67917384.chunk.css",
-    "main.js": "/equations-solver/static/js/main.8eb54930.chunk.js",
-    "main.js.map": "/equations-solver/static/js/main.8eb54930.chunk.js.map",
+    "main.js": "/equations-solver/static/js/main.3310d757.chunk.js",
+    "main.js.map": "/equations-solver/static/js/main.3310d757.chunk.js.map",
     "runtime-main.js": "/equations-solver/static/js/runtime-main.4bb2b969.js",
     "runtime-main.js.map": "/equations-solver/static/js/runtime-main.4bb2b969.js.map",
-    "static/js/2.300da837.chunk.js": "/equations-solver/static/js/2.300da837.chunk.js",
-    "static/js/2.300da837.chunk.js.map": "/equations-solver/static/js/2.300da837.chunk.js.map",
+    "static/js/2.a8f535c8.chunk.js": "/equations-solver/static/js/2.a8f535c8.chunk.js",
+    "static/js/2.a8f535c8.chunk.js.map": "/equations-solver/static/js/2.a8f535c8.chunk.js.map",
     "index.html": "/equations-solver/index.html",
-    "precache-manifest.8111213f30691067399c81246fdef4c3.js": "/equations-solver/precache-manifest.8111213f30691067399c81246fdef4c3.js",
+    "precache-manifest.4571b221f2a1e27860d7738ec72f9481.js": "/equations-solver/precache-manifest.4571b221f2a1e27860d7738ec72f9481.js",
     "service-worker.js": "/equations-solver/service-worker.js",
     "static/css/main.67917384.chunk.css.map": "/equations-solver/static/css/main.67917384.chunk.css.map",
-    "static/js/2.300da837.chunk.js.LICENSE": "/equations-solver/static/js/2.300da837.chunk.js.LICENSE"
+    "static/js/2.a8f535c8.chunk.js.LICENSE": "/equations-solver/static/js/2.a8f535c8.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.4bb2b969.js",
-    "static/js/2.300da837.chunk.js",
+    "static/js/2.a8f535c8.chunk.js",
     "static/css/main.67917384.chunk.css",
-    "static/js/main.8eb54930.chunk.js"
+    "static/js/main.3310d757.chunk.js"
   ]
 }
