@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Equations Solver",
+  "name": "Visual equation solver",
   "icons": [
     {
       "src": "favicon.ico",
