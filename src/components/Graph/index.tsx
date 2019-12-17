@@ -175,7 +175,6 @@ class Graph extends React.Component<IStoreProps, IState> {
           <Layer id="text">
             <Text
               onClick={this.resetTransform}
-              // tslint:disable-next-line:jsx-no-multiline-js
               text={
                 'react-konva H:'
                 + state.height.toFixed(2)

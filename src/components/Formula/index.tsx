@@ -54,7 +54,6 @@ class Formula extends React.Component<IStoreProps, IComponentState> {
 
 export const Roots: React.FC<IRoots> = ({ roots }) => (
     <>{
-    // tslint:disable-next-line:jsx-no-multiline-js
         roots
         .map((r, i) => {
             const digits = Math.abs(Math.log10(Store.get('eps'))) || 1;
