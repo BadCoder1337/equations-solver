@@ -17,9 +17,16 @@ const Control: React.FC<IStoreProps> = ({ store }) => (
             </select>
             <button onClick={actions.draw} className="Control-button">График</button>
             <button onClick={actions.solve} className="Control-button">Рассчитать</button>
+            <button onClick={actions.save} className="Control-button">Сохранить</button>
+        </div>
+        <div className="Control-panel">
             <span className="Control-panel-checkbox">
                 <input type="checkbox" checked={store.get('precisePlot')} onChange={writeCheckbox('precisePlot')}/>
                 <span>Точное построение</span>
+            </span>
+            <span className="Control-panel-checkbox">
+                <input type="checkbox" checked={store.get('debug')} onChange={writeCheckbox('debug')}/>
+                <span>Отладка</span>
             </span>
         </div>
     </div>

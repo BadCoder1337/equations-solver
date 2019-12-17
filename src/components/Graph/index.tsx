@@ -163,13 +163,17 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     this.setState({ points, roots });
   }
 
+  public save() {
+    const uri = this.stage!.toDataURL({ pixelRatio: 2, x: 0, y: 0 });
+    const link = document.createElement('a');
+    link.download = 'plot.png';
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   public render() {
-    const state = this.state;
-
-    const strokeWidth = 2 / Math.sqrt(this.scale.x * this.scale.y);
-
-    const withStrokeWidth = { strokeWidth };
-
     const { Stage, Layer, Group, Rect, Line, Text } = ReactKonva;
 
     return (
@@ -178,7 +182,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
           ref={r => this.ref = r}
           onWheel={this.handleScroll}
           className="Graph-stage"
-          {...state}
+          {...this.state}
         >
           <Layer
             onDblTap={this.reset}
@@ -189,14 +193,15 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
             scale={this.scale}
             id="graph"
             {...this.center}
+            // Main layer
           >
             <Group>
               <Rect
                 fill="transparent"
                 x={-this.center.x / this.scale.x}
                 y={-this.center.y / this.scale.y}
-                width={state.width / this.scale.x}
-                height={state.height / this.scale.y}
+                width={this.state.width / this.scale.x}
+                height={this.state.height / this.scale.y}
               />
 
               {this.Lines.x()}
@@ -206,7 +211,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
               {this.Numbers.y()}
 
               <Portal>
-                {(state.roots && !state.dragging ? state.roots : [])
+                {(this.state.roots && !this.state.dragging ? this.state.roots : [])
                   .map((root, i) => {
                     const props = {
                       x: root - 0.1,
@@ -218,18 +223,22 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
               </Portal>
             </Group>
             <Group>
-              <Line stroke="black" {...withStrokeWidth} points={state.points.flat()} scaleY={-1} />
+              <Line stroke="black" strokeWidth={this.strokeWidth.x} points={this.state.points.flat()} scaleY={-1} />
             </Group>
           </Layer>
-          <Layer id="text">
+          <Layer
+            visible={this.store.get('debug')}
+            id="debug"
+            // Debug layer
+          >
             <Text
               onClick={this.reset}
               text={
                 'react-konva'
                 + '\nH:'
-                + state.height.toFixed(2)
+                + this.state.height.toFixed(2)
                 + ' W:'
-                + state.width.toFixed(2)
+                + this.state.width.toFixed(2)
                 + '\nS:'
                 + this.store.get('scale').map(v => v.toFixed(2))
                 + '\nO:'
@@ -245,12 +254,12 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
                 + ' Ry:'
                 + this.range.y.toFixed(2)
                 + '\nSx:'
-                + this.strokeWidth.x.toFixed(2)
+                + this.strokeWidth.x.toFixed(3)
                 + ' Sy:'
-                + this.strokeWidth.y.toFixed(2)
+                + this.strokeWidth.y.toFixed(3)
                 + '\nP:'
-                + state.points.length
-                + '\nClick here to reset.'
+                + this.state.points.length
+                + '\nDouble-click to reset.'
               }
               fontSize={12}
               fontFamily={`"Lucida Console", Monaco, monospace`}
@@ -258,7 +267,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
           </Layer>
         </Stage>
         <div className="Graph-roots">
-          <Roots roots={state.roots || []} />
+          <Roots roots={this.state.roots || []} />
         </div>
       </div>
     );
@@ -306,6 +315,10 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
       x: 2 / this.scale.x,
       y: 2 / this.scale.y
     };
+  }
+
+  public get stage() {
+    return this.ref?.getStage();
   }
 
   // Sub-components

@@ -1,23 +1,19 @@
-.Control {
-  display: flex;
-  flex-direction: column;
-}
-
 .Control > * {
   margin: 5px;
 }
 
-.Control-panel {
+.Control, .Control-panel {
   display: flex;
   justify-content: center;
   align-items: stretch;
   flex-wrap: wrap;
 }
 
-.Control-panel-checkbox > * {
-  vertical-align: text-bottom;
+.Control-panel > * {
+  margin: 5px 5px;
+  font-size: 18px;
 }
 
-.Control-panel > * {
-  font-size: 18px;
+.Control-panel-checkbox > * {
+  vertical-align: text-bottom;
 }
