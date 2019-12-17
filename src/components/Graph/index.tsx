@@ -13,14 +13,21 @@ import './Graph.css';
 const isMobile = [/Android/, /webOS/, /iPhone/, /iPad/, /iPod/, /BlackBerry/, /Windows Phone/].some(rexp => rexp.test(navigator.userAgent));
 const scaleFactor = 1.1;
 
-interface IState {
-  width: number;
-  height: number;
-  points: ArrayPoint[];
-  roots: number[];
+const defaultState = {
+  width: window.innerWidth * 0.9,
+  height: window.innerHeight * 0.6,
+  points: [] as ArrayPoint[],
+  roots: [] as number[],
+  dragging: false
+ };
+
+interface IRootLabel {
+  i: number;
+  x: number;
+  y: number;
 }
 
-class Graph extends React.Component<IStoreProps, IState> {
+class Graph extends React.Component<IStoreProps, typeof defaultState> {
   constructor(props: any) {
     super(props);
 
@@ -32,7 +39,7 @@ class Graph extends React.Component<IStoreProps, IState> {
     actions.solve = this.solve.bind(this);
   }
 
-  public state = { width: window.innerWidth * 0.9, height: window.innerHeight * 0.6, points: [], roots: [] };
+  public state = defaultState;
 
   public componentDidMount() {
     window.addEventListener('resize', this.resizeCanvas);
