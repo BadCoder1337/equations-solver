@@ -108,13 +108,11 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
   public calculatePoints() {
     if (objects.evaluatex) {
       const store = this.props.store;
-      const offset = store.get('offset');
-      const range = this.state.width / store.get('scale')[0];
-      const corners = [-range * offset[0], range * (1 - offset[0])];
-      const scaledStep = store.get('precisePlot') ? store.get('step') : (corners[1] - corners[0]) / this.state.width;
+
+      const scaledStep = store.get('precisePlot') ? store.get('step') : (this.corners.x[1] - this.corners.x[0]) / this.state.width;
 
       const points: ArrayPoint[] = [];
-      for (let x = corners[0]; x < corners[1]; x += scaledStep) {
+      for (let x = this.corners.x[0]; x < this.corners.x[1]; x += scaledStep) {
         try {
           points.push([x, objects.evaluatex({ x })]);
         } catch (error) {
@@ -148,7 +146,7 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
 
   public render() {
     const state = this.state;
-    const store = this.props.store;
+    const store = this.store;
 
     const scale = {
       x: store.get('scale')[0],
@@ -188,8 +186,10 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
                 + store.get('offset').map(v => v.toFixed(2))
                 + ' C:'
                 + Object.values(this.center).map(v => v.toFixed(2))
-                + ' B:'
-                + [-state.width / store.get('scale')[0], state.width / store.get('scale')[1]].map(v => v.toFixed(2))
+                + ' Bx:'
+                + this.corners.x.map(v => v.toFixed(2))
+                + ' By:'
+                + this.corners.y.map(v => v.toFixed(2))
                 + ' P:'
                 + state.points.length
                 + ' Click here to reset.'
@@ -206,12 +206,31 @@ class Graph extends React.Component<IStoreProps, typeof defaultState> {
     );
   }
 
+  public get store() {
+    return this.props.store;
+  }
+
   public get center() {
     const state = this.state;
-    const store = this.props.store;
+    const store = this.store;
     return {
       x: state.width * store.get('offset')[0],
       y: state.height * store.get('offset')[1],
+    };
+  }
+
+  public get range() {
+    return {
+      x: this.state.width / this.store.get('scale')[0],
+      y: this.state.height / this.store.get('scale')[1]
+    };
+  }
+
+  public get corners() {
+    const offset = this.store.get('offset');
+    return {
+      x: [-this.range.x * offset[0], this.range.x * (1 - offset[0])],
+      y: [-this.range.y * offset[1], this.range.y * (1 - offset[1])]
     };
   }
 
