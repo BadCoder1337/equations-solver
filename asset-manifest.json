@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/equations-solver/static/css/main.9d369e32.chunk.css",
-    "main.js": "/equations-solver/static/js/main.044cef55.chunk.js",
-    "main.js.map": "/equations-solver/static/js/main.044cef55.chunk.js.map",
+    "main.js": "/equations-solver/static/js/main.9f089f0b.chunk.js",
+    "main.js.map": "/equations-solver/static/js/main.9f089f0b.chunk.js.map",
     "runtime-main.js": "/equations-solver/static/js/runtime-main.4bb2b969.js",
     "runtime-main.js.map": "/equations-solver/static/js/runtime-main.4bb2b969.js.map",
     "static/js/2.2dba6b65.chunk.js": "/equations-solver/static/js/2.2dba6b65.chunk.js",
     "static/js/2.2dba6b65.chunk.js.map": "/equations-solver/static/js/2.2dba6b65.chunk.js.map",
     "index.html": "/equations-solver/index.html",
-    "precache-manifest.3d4d22e4859fe534b6a1081b87c1b99f.js": "/equations-solver/precache-manifest.3d4d22e4859fe534b6a1081b87c1b99f.js",
+    "precache-manifest.8471bad0d7749a24755a932f50b75a39.js": "/equations-solver/precache-manifest.8471bad0d7749a24755a932f50b75a39.js",
     "service-worker.js": "/equations-solver/service-worker.js",
     "static/css/main.9d369e32.chunk.css.map": "/equations-solver/static/css/main.9d369e32.chunk.css.map",
     "static/js/2.2dba6b65.chunk.js.LICENSE": "/equations-solver/static/js/2.2dba6b65.chunk.js.LICENSE"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.4bb2b969.js",
     "static/js/2.2dba6b65.chunk.js",
     "static/css/main.9d369e32.chunk.css",
-    "static/js/main.044cef55.chunk.js"
+    "static/js/main.9f089f0b.chunk.js"
   ]
 }
