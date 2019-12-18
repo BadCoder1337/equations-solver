@@ -118,8 +118,8 @@ class Graph extends React.Component<IStoreProps, typeof Graph.defaultState> {
   }
 
   public reset() {
-    this.props.store.set('offset')([0.5, 0.5]);
-    this.props.store.set('scale')([100, 100]);
+    this.props.store.set('offset')(defaultState.offset);
+    this.props.store.set('scale')(defaultState.scale);
     this.setState({ roots: null });
     this.drawCanvas();
   }
