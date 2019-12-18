@@ -8,9 +8,9 @@ import './MathBoard.css';
 //     editRaw: boolean;
 // }
 
-const operators = ['\\pi', '☐^2', 'x^{☐}', '\\sqrt{☐}', '\\sqrt[☐]{☐}', '\\frac{☐}{☐}', '\\log_{☐}'];
+const operators = ['\\pi', '□^2', 'x^{□}', '\\sqrt{□}', '\\sqrt[□]{□}', '\\frac{□}{□}', '\\log_{□}'];
 
-const writeLaTex = (op: string) => () => objects.mathField?.write(op.replace(/☐/g, ''));
+const writeLaTex = (op: string) => () => objects.mathField?.write(op.replace(/□/g, ''));
 
 const Button = (op: string, i: number) => (
     <div
