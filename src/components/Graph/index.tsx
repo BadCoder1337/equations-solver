@@ -374,7 +374,7 @@ class Graph extends React.Component<IStoreProps, typeof Graph.defaultState> {
       <ReactKonva.Text
         key={i}
         x={(axis === 'x' ? i : 0) + 0.1 * defaultState.scale[0] / scale.x}
-        y={(axis === 'x' ? 0 : i) + 0.1 * defaultState.scale[1] / scale.y}
+        y={(axis === 'x' ? 0 : -i) + 0.1 * defaultState.scale[1] / scale.y}
         scaleX={0.3 * defaultState.scale[0] / scale.x}
         scaleY={0.3 * defaultState.scale[1] / scale.y}
         fontSize={1}
